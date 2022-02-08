@@ -1,4 +1,5 @@
 ﻿using ProjectLog.Models;
+using ProjectLog.ViewModel;
 using System.Collections.Generic;
 
 namespace ProjectLog.Services
@@ -7,6 +8,6 @@ namespace ProjectLog.Services
     {
         public List<Sdg> GetAllSdgs();
 
-        public List<Project> GetProjectUnderSDG(int id);
+        public SDGProjectViewModel GetProjectUnderSDG(int id);
     }
 }
