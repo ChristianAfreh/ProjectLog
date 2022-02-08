@@ -1,15 +1,17 @@
-﻿@model List<Project>
-<link href="~/css/card.css" rel="stylesheet"/>
-<header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+﻿@model SDGProjectViewModel
+@{
+    ViewData["Title"] = @Model.sdg.Name;
+}
+<header class="masthead" style="background-size: cover; background: no-repeat 20% 70%; background-size: cover; background-image: url('@Url.Content("~/pics/" + @ViewBag.id +".png")'); ">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="post-heading">
-                    <h1>Man must explore, and this is exploration at its greatest</h1>
-                    <h2 class="subheading">Problems look mighty small from 150 miles up</h2>
+                    <h1>@Model.sdg.Name</h1>
+                    <h2 class="subheading">@Model.sdg.Description</h2>
                     <span class="meta">
                         Posted by
-                        <a href="#!">Start Bootstrap</a>
+                        <a href="#!">Knust-Uits</a>
                         on August 24, 2021
                     </span>
                 </div>
@@ -24,32 +26,22 @@
     <h3>List of project under the SDG</h3>
     <ul class="list-group pmd-list pmd-card-list">
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.project)
         {
-            
-         <div class="col-md-4">
-            <div class="card p-3 mb-2">
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
-                        <div class="ms-2 c-details">
-                            <h6 class="mb-0">Mailchimp</h6> <span>1 days ago</span>
-                        </div>
+
+            <li class="list-group-item d-flex align-items-center m-1">
+                <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@item.ProjectId">
+                    <div class="media-body">
+                        @item.Title
                     </div>
-                    <div class="badge"> <span>Design</span> </div>
-                </div>
-                <div class="mt-5">
-                    <h3 class="heading">Senior Product<br>Designer-Singapore</h3>
-                    <div class="mt-5">
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div class="mt-3"> <span class="text1">32 Applied <span class="text2">of 50 capacity</span></span> </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    @*<i class="fa fa-bars"></i>*@
+                </a>
+
+            </li>
+
 
         }
+
+
     </ul>
 </div>
