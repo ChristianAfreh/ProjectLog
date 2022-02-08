@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using ProjectLog.Data;
 using ProjectLog.Models;
 using ProjectLog.Services;
+using ProjectLog.Services.IService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,7 @@ namespace ProjectLog
                 .AddEntityFrameworkStores<ProjectLogDBContext>();
             services.AddControllersWithViews();
             services.AddTransient<ISdgService, SdgService>();
+            services.AddTransient<IProjectService, ProjectService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
