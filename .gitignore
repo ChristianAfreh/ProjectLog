@@ -2,4 +2,10 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/VSWorkspaceState.json
+/.vs
+/ProjectLog/.vs/ProjectLog/
+/ProjectLog/ProjectLog/obj
+/ProjectLog/.vs/ProjectLog/config
+/ProjectLog/ProjectLog/bin/Debug/net5.0
+/ProjectLog/.vs/ProjectLog
+/ProjectLog/ProjectLog/wwwroot/lib
