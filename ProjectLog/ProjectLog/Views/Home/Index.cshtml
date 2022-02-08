@@ -1,8 +1,63 @@
-﻿@{
+﻿@model List<Sdg>
+@{
     ViewData["Title"] = "Home Page";
 }
+<link href="~/css/Home.css" rel="stylesheet" />
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<header class="masthead" style="background-image: url('assets/img/home-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Project Log</h1>
+                    <span class="subheading">Projects Undertaken by UITS Meeting the SDGs</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container-fluid mb-5">
+    <div class="text-center mt-5">
+        <h1>Our Projects</h1>
+    </div>
+    <div class="row">
+
+        @foreach(var item in Model)
+        {
+              <div class="col-md-4">
+                <div class="box">
+                    <a asp-controller="Detail" asp-action="Index" style="color:black;">
+                        <div class="our-services settings">
+                            <div class="icon"> <img src="@Url.Content("~/pics/" + @item.GoalId +".png")" height="100" width="100"> </div>
+                            <h4 style="text-decoration:none;">@item.Name</h4>
+                            <p>@item.Description</p>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        }
+
+       @* @for (int i = 0; i < 7; i++)
+        {
+
+            <div class="col-md-4">
+                <div class="box">
+                    <a asp-controller="Detail" asp-action="Index" style="color:black;">
+                        <div class="our-services settings">
+                            <div class="icon"> <img src="@Url.Content("~/pics/" + @i +".png")" height="100" width="100"> </div>
+                            <h4 style="text-decoration:none;">Settings</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+
+
+        }*@
+
+
+    </div>
 </div>
+<!-- Modal -->

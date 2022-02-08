@@ -1,26 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProjectLog.Models;
-using System;
-using System.Collections.Generic;
+using ProjectLog.Services;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProjectLog.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ISdgService _sdgService;
+        public HomeController(ISdgService sdgService)
         {
-            _logger = logger;
+            _sdgService = sdgService;
         }
-
         public IActionResult Index()
         {
-            return View();
+           var result = _sdgService.GetAllSdgs();
+            return View(result);
         }
 
         public IActionResult Privacy()

@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjectLog.Data;
+using ProjectLog.Models;
+using ProjectLog.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,14 +29,15 @@ namespace ProjectLog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ProjectLogDBContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ProjectLogDBContext>();
             services.AddControllersWithViews();
+            services.AddTransient<ISdgService, SdgService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
