@@ -16,5 +16,6 @@ namespace ProjectLog.Services
             var result = _context.Sdgs.ToList();
             return result;
         }
+
     }
 }

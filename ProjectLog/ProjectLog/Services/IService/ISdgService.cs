@@ -6,5 +6,7 @@ namespace ProjectLog.Services
     public interface ISdgService
     {
         public List<Sdg> GetAllSdgs();
+
+
     }
 }
