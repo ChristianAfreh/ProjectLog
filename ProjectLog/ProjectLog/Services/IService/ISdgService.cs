@@ -7,6 +7,6 @@ namespace ProjectLog.Services
     {
         public List<Sdg> GetAllSdgs();
 
-
+        public List<Project> GetProjectUnderSDG(int id);
     }
 }

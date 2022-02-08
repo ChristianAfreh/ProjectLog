@@ -8,11 +8,10 @@ namespace ProjectLog.Controllers
 {
     public class ProjectController : Controller
     {
-        public IActionResult ProjectDetails()
+        public IActionResult ProjectDetails(int id)
         {
             return View();
         }
-
         public IActionResult AddProject()
         {
             return View();

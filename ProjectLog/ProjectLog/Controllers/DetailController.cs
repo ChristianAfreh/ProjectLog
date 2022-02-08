@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjectLog.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,16 @@ namespace ProjectLog.Controllers
 {
     public class DetailController : Controller
     {
-        public IActionResult Index()
+        private readonly ISdgService _sdgService;
+
+        public DetailController(ISdgService sdgService)
         {
-            return View();
+            _sdgService = sdgService;
+        }
+        public IActionResult Index(int id)
+        {
+            var result =_sdgService.GetProjectUnderSDG( id);
+            return View(result);
         }
     }
 }
