@@ -1,5 +1,56 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<link href="~/css/masthead.css" rel="stylesheet" />
+<header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+</header>
+
+<h1 class="text-center ">Add Project</h1>
+
+<div class="account-pages w-100 mt-5 mb-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card">
+
+                    <div class="card-body p-4">
+
+                        @*<div class="text-center ">
+                            <a>
+                                <span><img src="~/assets/images/Knust.png" alt="" style="height:50px"></span>
+                                <span class="font-weight-bold"> Add Projects</span>
+                            </a>
+
+                        </div>*@
+
+                        <form action="post" class="pt-2">
+
+                            <div class="form-group mb-3">
+                                <label for="fullname">Project Title</label>
+                                <input class="form-control" type="text" id="fullname" placeholder="Title" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="fullname">Project Manager</label>
+                                <input class="form-control" type="email" id="emailaddress" required placeholder="Project Manager">
+
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="emailaddress">Description</label>
+                                <textarea style="height: 150px;"  class="form-control" type="text" id="fullname" placeholder="Description" required></textarea>
+                            </div>
+
+                            <div class="form-group mb-0 text-center">
+                                <button style="float:left" class="btn btn-primary btn-block" type="submit"> Add Project </button>
+                            </div>
+
+                        </form>
+
+                        <!-- end row -->
+
+                    </div> <!-- end card-body -->
+                </div>
+                <!-- end card -->
+
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
