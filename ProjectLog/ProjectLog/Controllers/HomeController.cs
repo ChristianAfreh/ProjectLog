@@ -19,11 +19,7 @@ namespace ProjectLog.Controllers
             return View(result);
         }
 
-        public IActionResult ProjectList()
-        {
-
-            return View();
-        }
+    
         public IActionResult Privacy()
         {
             return View();

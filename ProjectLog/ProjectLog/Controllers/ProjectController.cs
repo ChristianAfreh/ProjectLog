@@ -24,5 +24,13 @@ namespace ProjectLog.Controllers
         {
             return View();
         }
+
+        public IActionResult ProjectList()
+        {
+            var projects = _projectService.GetAllProjects();
+            return View(projects);
+        }
+
+
     }
 }
