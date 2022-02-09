@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using ProjectLog.Models;
 using ProjectLog.ViewModel;
 using System.Collections.Generic;
@@ -29,6 +30,8 @@ namespace ProjectLog.Services
             {
 
                 project.Add(_context.Projects.Find(item.ProjectId));
+                //var res = _context.Projects.Where(x => x.ProjectId == item.ProjectId);
+                //project.Add((Project)res);
             }
 
             SDGProjectViewModel sDGProjectViewModel = new SDGProjectViewModel()
@@ -36,8 +39,6 @@ namespace ProjectLog.Services
                 sdg = sdg,
                 project = project
             };
-
-            //var result = _context.Sdgprojects.FromSql(" select SDGProject.ProjectID, Project.Title ,Project.Description,Project.ProjectIDFROM SDGProject join  Projecton SDGProject.ProjectID = Project.ProjectID where SDGProject.GoalID = 2");
 
             return sDGProjectViewModel;
         }

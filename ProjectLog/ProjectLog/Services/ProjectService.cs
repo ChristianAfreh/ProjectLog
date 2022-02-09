@@ -1,5 +1,7 @@
-﻿using ProjectLog.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectLog.Models;
 using ProjectLog.Services.IService;
+using ProjectLog.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +17,7 @@ namespace ProjectLog.Services
 
         public List<Project> GetAllProjects()
         {
-            var projects = _context.Projects.ToList();
+            var projects = _context.Projects.Include(x => x.Status).ToList();
             return projects;
         }
 
@@ -33,5 +35,10 @@ namespace ProjectLog.Services
             };
             return projectDetails;
         }
-    }
+
+      
+
+     
+        
+}
 }

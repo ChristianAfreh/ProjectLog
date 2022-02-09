@@ -17,7 +17,7 @@ namespace ProjectLog.Controllers
         }
         public IActionResult Index(int id)
         {
-            ViewBag.id = id;
+             ViewBag.id = id;
             var result =_sdgService.GetProjectUnderSDG( id);
             return View(result);
         }
