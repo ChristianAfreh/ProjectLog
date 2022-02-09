@@ -3,33 +3,36 @@
 <link href="~/css/masthead.css" rel="stylesheet" />
 <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
 </header>
-
-<h1>Show list of Project</h1>
-@foreach(var item in Model)
-{   
-    <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@item.ProjectId" style="text-decoration:none">
-            <div class="col-md-4">
-            <div class="card p-3 mb-2">
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
-                        <div class="ms-2 c-details">
-                            <h6 class="mb-0">@item.ProjectManager</h6> <span>Project Manager</span>
+    <div class="container">
+    <h3 class="h3">Show list of Project</h3>
+            <div class="row">
+                    @foreach(var item in Model)
+                    {   
+                        <div class="col-md-4">
+                        <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@item.ProjectId" style="text-decoration:none">
+                        <div class="card p-3 mb-2">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
+                                    <div class="ms-2 c-details">
+                                        <h6 class="mb-0">@item.ProjectManager</h6> <span>Project Manager</span>
+                                    </div>
+                                </div>
+                                <div class="badge"> <span>Completed</span> </div>
+                            </div>
+                            <div class="mt-5">
+                                <h3 class="heading">@item.Title</h3>
+                                <div class="mt-5">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="mt-3"> <span class="text1">Created On - <span class="text2">@item.CreatedOn</span></span> </div>
+                                </div>
+                            </div>
                         </div>
+                            </a>
                     </div>
-                    <div class="badge"> <span>Completed</span> </div>
-                </div>
-                <div class="mt-5">
-                    <h3 class="heading">@item.Title</h3>
-                    <div class="mt-5">
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div class="mt-3"> <span class="text1">Created On - <span class="text2">@item.CreatedOn</span></span> </div>
-                    </div>
-                </div>
+                           
+                    }
             </div>
-        </div>
-        </a>
-}
-
+    </div>
