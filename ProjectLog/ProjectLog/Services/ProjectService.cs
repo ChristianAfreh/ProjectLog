@@ -1,5 +1,7 @@
 ﻿using ProjectLog.Models;
 using ProjectLog.Services.IService;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectLog.Services
 {
@@ -9,6 +11,12 @@ namespace ProjectLog.Services
         public ProjectService(ProjectLogDBContext context)
         {
             _context = context;
+        }
+
+        public List<Project> GetAllProjects()
+        {
+            var projects = _context.Projects.ToList();
+            return projects;
         }
 
         public Project GetProjectById(int Id)
