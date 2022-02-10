@@ -33,7 +33,6 @@ namespace ProjectLog.Services
             return project;
         }
 
-
         public List<Project> GetAllProjects()
         {
             var projects = _context.Projects.ToList();
@@ -54,5 +53,19 @@ namespace ProjectLog.Services
             };
             return projectDetails;
         }
+        public Project DeleteProject(int ProjectId)
+        {
+            Project project = _context.Projects.FirstOrDefault(x => x.ProjectId == ProjectId);
+            
+            if (project != null)
+            {
+                _context.Remove(project);
+            }
+            return project;
+
+
+        }
     }
+
+
 }

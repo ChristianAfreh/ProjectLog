@@ -3,7 +3,7 @@
     ViewData["Title"] = @Model.sdg.Name;
 }
 
-<link  href="~/css/card.css" rel="stylesheet"/>
+<link href="~/css/card.css" rel="stylesheet" />
 
 <header class="masthead" style="background-size: cover; background: no-repeat 20% 70%; background-size: cover; background-image: url('@Url.Content("~/pics/" + @ViewBag.id+ ".png")');">
     <div class="container position-relative px-4 px-lg-5">
@@ -25,45 +25,81 @@
 
 <!-- Single line list with Badge-->
 
-<div><div class="container">
-    <h3 class="h3 text-center">List of Projects under @Model.sdg.Name</h3>
-    <hr />
-    
+<div>
+    <div class="container">
+        <h3 class="h3 text-center">List of Projects under @Model.sdg.Name</h3>
+        <hr />
 
-      
-            
-    <div class="row" style="grid-gap:10px;">
-        @foreach (var item in Model.project)
-        {
 
-            <div class="col-md-4">
-                <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@item.ProjectId" style="text-decoration:none">
-                    <div class="card p-3 mb-2">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex flex-row align-items-center">
-                                <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
-                                <div class="ms-2 c-details">
-                                    <h6 class="mb-0">@item.ProjectManager</h6> <span>Project Manager</span>
+
+        <div class="row" style="gap:10px;">
+            @foreach (var item in Model.project)
+            {
+                <div class="col-md-4">
+                    <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@item.ProjectId" style="text-decoration:none">
+                        <div class="card p-3 mb-2">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
+                                    <div class="ms-2 c-details">
+                                        <h6 class="mb-0">@item.ProjectManager</h6> <span>Project Manager</span>
+                                    </div>
                                 </div>
+                                @if (@item.StatusId == 1)
+                                {
+                                    <div><span class="badge badge-pill badge-success">Completed</span> </div>
+
+                                }
+
+                                else if (@item.StatusId == 1601)
+                                {
+                                    <div><span class="badge badge-pill badge-danger">Uncompleted</span> </div>
+
+                                }
+                                else if (@item.StatusId == 801)
+                                {
+                                    <div><span class="badge badge-pill badge-warning">In Progress</span> </div>
+
+                                }
+
                             </div>
-                            <div> <span class="badge badge-pill badge-success">Completed</span> </div>
-                        </div>
-                        <div class="mt-5">
-                            <h3 class="heading">@item.Title</h3>
+
                             <div class="mt-5">
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+
+                                <h3 class="heading" style="width:300px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap">@item.Title</h3>
+                                <br />
+                                @if (@item.StatusId == 1)
+                                {
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                }
+                                else if (@item.StatusId == 801)
+                                {
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                }
+                                else if (@item.StatusId == 1601)
+                                {
+                                    <div class="progress">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                }
+
+                                <div class="mt-5">
+                                    <div class="mt-3"> <span class="text-muted" style="font-size:12px">Created On - @item.CreatedOn.ToLongDateString()</span> </div>
                                 </div>
-                                <div class="mt-3"> <span class="text-muted" style="font-size:12px">Created On - @item.CreatedOn.ToLongDateString()</span> </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-        }
-        </div>
-       
-      
+                    </a>
+                </div>
 
-   
-</div></div>
+            }
+        </div>
+
+
+
+
+    </div>
+</div>

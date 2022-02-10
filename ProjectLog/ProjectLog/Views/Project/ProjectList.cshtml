@@ -1,75 +1,80 @@
 ﻿@model IEnumerable<Project>
 
-<link  href="~/css/card.css" rel="stylesheet"/>
+<link href="~/css/card.css" rel="stylesheet" />
 <link href="~/css/masthead.css" rel="stylesheet" />
 <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
 </header>
-    <div class="container">
-    <h3 class="h3 text-center" >List of All Projects</h3>
+<div class="container">
+    <h3 class="h3 text-center">List of All Projects</h3>
     <hr />
-            <div class="row">
-                    @foreach(var item in Model)
-                    {   
-                        <div class="col-md-4">
-                        <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@item.ProjectId" style="text-decoration:none">
-                        <div class="card p-3 mb-2">
-                            <div  class="d-flex justify-content-between">
-                                <div class="d-flex flex-row align-items-center">
-                                    <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
-                                    <div class="ms-2 c-details">
-                                        <h6 class="mb-0">@item.ProjectManager</h6> <span>Project Manager</span>
-                                    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@item.ProjectId" style="text-decoration:none">
+                    <div class="card p-3 mb-2">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
+                                <div class="ms-2 c-details">
+                                    <h6 class="mb-0">@item.ProjectManager</h6> <span>Project Manager</span>
                                 </div>
-                            @if(@item.Status.Name == "Completed")
+                            </div>
+                            @if (@item.StatusId == 1)
                             {
-                                <div><span class="badge badge-pill badge-success">@item.Status.Name</span> </div>
-                                
+                                <div><span class="badge badge-pill badge-success">Completed</span> </div>
+
                             }
 
-                            else if(@item.Status.Name == "Uncompleted")
+                            else if (@item.StatusId == 1601)
                             {
-                                <div><span class="badge badge-pill badge-danger">@item.Status.Name</span> </div>
-                                
+                                <div><span class="badge badge-pill badge-danger">Uncompleted</span> </div>
+
                             }
-                            else if(@item.Status.Name == "In Progress")
+                            else if (@item.StatusId == 801)
                             {
-                                <div><span class="badge badge-pill badge-warning">@item.Status.Name</span> </div>
-                               
+                                <div><span class="badge badge-pill badge-warning">In Progress</span> </div>
+
                             }
-                            
-                            </div>
-                            
+
+                        </div>
+
+                        <div class="mt-5">
+
+                            <h3 class="heading" style="width:300px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap">@item.Title</h3>
+                            <br />
+                            @if (@item.StatusId == 1)
+                            {
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            }
+                            else if (@item.StatusId == 801)
+                            {
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            }
+                            else if (@item.StatusId == 1601)
+                            {
+                                <div class="progress">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            }
+
                             <div class="mt-5">
-                           
-                                <h3 class="heading" style="width:300px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap">@item.Title</h3>
-                            <br/>     
-                              @if(@item.Status.Name == "Completed")
-                            {
-                                 <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="mt-3"> <span class="text-muted" style="font-size:12px">Created On - @item.CreatedOn.ToLongDateString()</span> </div>
+                                <div class="mt-3 float-right">
+                                    <i class="fas fa-edit "></i>
+                                    <i class="fas fa-trash"></i>
                                 </div>
-                            }
-                              else if(@item.Status.Name == "In Progress")
-                            {
-                                 <div class="progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            }
-                              else if(@item.Status.Name == "Uncompleted")
-                            {
-                                 <div class="progress">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            }
-                           
-                                <div class="mt-5">
-                                   <div class="mt-3"> <span class="text-muted" style="font-size:12px">Created On - @item.CreatedOn.ToLongDateString()</span> </div>
-                                </div>
+                            
                             </div>
                         </div>
-                            </a>
                     </div>
-                           
-                    }
+                </a>
             </div>
+
+        }
     </div>
+</div>

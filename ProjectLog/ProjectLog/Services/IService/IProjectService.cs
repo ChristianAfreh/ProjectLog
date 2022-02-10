@@ -12,7 +12,9 @@ namespace ProjectLog.Services.IService
 
         public Project AddProject(AddProjectViewModel model);
 
-        
+        public Project DeleteProject(int ProjectId);
+
+
 
     }
 }

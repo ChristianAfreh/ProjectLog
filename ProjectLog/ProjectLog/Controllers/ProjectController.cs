@@ -60,9 +60,14 @@ namespace ProjectLog.Controllers
             return View();
         }
 
+        //public IActionResult DeleteProject(int Id)
+        //{
+
+        //}
 
 
-       
+
+
 
 
     }

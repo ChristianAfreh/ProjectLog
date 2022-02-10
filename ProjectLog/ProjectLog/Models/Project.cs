@@ -9,6 +9,7 @@ namespace ProjectLog.Models
     {
         public Project()
         {
+            ProjectPhotos = new HashSet<ProjectPhoto>();
             Sdgprojects = new HashSet<Sdgproject>();
             StaffProjects = new HashSet<StaffProject>();
         }
@@ -22,6 +23,7 @@ namespace ProjectLog.Models
         public int StatusId { get; set; }
 
         public virtual Status Status { get; set; }
+        public virtual ICollection<ProjectPhoto> ProjectPhotos { get; set; }
         public virtual ICollection<Sdgproject> Sdgprojects { get; set; }
         public virtual ICollection<StaffProject> StaffProjects { get; set; }
     }
