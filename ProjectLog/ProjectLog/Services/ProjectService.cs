@@ -17,14 +17,14 @@ namespace ProjectLog.Services
             _context = context;
         }
 
-        public  string AddImagetoProject(string filename, int projectId)
+        public string AddImagetoProject(string filename, int projectId)
         {
             var photostring = new ProjectPhoto
             {
-                PhotoPath= filename,
-                ProjectId= projectId
+                PhotoPath = filename,
+                ProjectId = projectId
             };
-             _context.ProjectPhotos.Add(photostring);
+            _context.ProjectPhotos.Add(photostring);
             _context.SaveChanges();
             return "Added";
         }
@@ -48,6 +48,49 @@ namespace ProjectLog.Services
             return project;
         }
 
+        public void AddSDGToProject(int SDGID, int projectId)
+        {
+
+            if (_context.Sdgprojects.Where(x => x.GoalId == SDGID && x.ProjectId == projectId).Any())
+            {
+
+            }
+            else
+            {
+                Sdgproject sdgproject = new Sdgproject()
+                {
+                    GoalId = SDGID,
+                    ProjectId = projectId
+                };
+
+                _context.Sdgprojects.Add(sdgproject);
+                _context.SaveChanges();
+            }
+
+        }
+
+        public void AddStaffToProject(int StaffId, int projectId)
+        {
+
+
+            if (_context.StaffProjects.Where(x => x.StaffId == StaffId && x.ProjectId == projectId).Any())
+            {
+
+            }
+            else
+            {
+                StaffProject staffproject = new StaffProject()
+                {
+                    StaffId = StaffId,
+                    ProjectId = projectId,
+                    CreatedOn = DateTime.Now
+                };
+
+                _context.StaffProjects.Add(staffproject);
+                _context.SaveChanges();
+            }
+
+        }
 
         public List<Project> GetAllProjects()
         {
@@ -60,10 +103,10 @@ namespace ProjectLog.Services
             var x = new AddProjectViewModel()
             {
                 statuses = new SelectList(_context.Statuses.Select(s => new { Id = s.StatusId, Text = $"{s.Name}" }), "Id", "Text"),
-                
+
             };
 
-           return x;
+            return x;
         }
 
         public Project GetProjectById(int Id)
@@ -80,19 +123,5 @@ namespace ProjectLog.Services
             };
             return projectDetails;
         }
-        public Project DeleteProject(int ProjectId)
-        {
-            Project project = _context.Projects.FirstOrDefault(x => x.ProjectId == ProjectId);
-            
-            if (project != null)
-            {
-                _context.Remove(project);
-            }
-            return project;
-
-
-        }
     }
-
-
 }
