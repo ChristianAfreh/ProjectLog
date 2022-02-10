@@ -1,5 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<AddSDGToProjectViewModel>
+
 @{
+    ViewData["Title"] = "Add Sdg";
 }
+
+<link href="~/css/masthead.css" rel="stylesheet" />
+<header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+</header>
+
+<h1 class="text-center ">Assign SDG TO PROJECT</h1>
+
+<div class="account-pages w-100 mt-5 mb-5">
+    <div class="container">
+        <form method="post">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Add or Remove SDG</h2>
+                </div>
+
+                <div class="card-body">
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <div class="form-check m1">
+                            <input type="hidden" asp-for="@Model[i].SDGId" />
+                            <input type="hidden" asp-for="@Model[i].SDGName" />
+                            <input class="form-check-input" asp-for="@Model[i].IsSelected"/>
+                            <label class="form-check-label" asp-for="@Model[i].IsSelected">@Model[i].SDGName</label>
+                        </div>
+                    }
+
+                </div>
+
+                <div class="card-footer">
+                    <input type="submit"/>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</div>

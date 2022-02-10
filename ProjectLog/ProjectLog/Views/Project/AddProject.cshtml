@@ -17,13 +17,13 @@
 
                     <div class="card-body p-4">
 
-                        @*<div class="text-center ">
+                        <div class="text-center ">
                                 <a>
                                     <span><img src="~/assets/images/Knust.png" alt="" style="height:50px"></span>
                                     <span class="font-weight-bold"> Add Projects</span>
                                 </a>
 
-                            </div>*@
+                            </div>
 
                         <form method="post" class="pt-2" enctype="multipart/form-data">
 
@@ -37,18 +37,33 @@
 
                             </div>
                             <div class="form-group mb-3">
+                                <label>Started date</label>
+                                <input class="form-control" type="date" asp-for="@Model.date" required placeholder="Start Date">
+
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label>Status of the project</label>
+                                <select asp-items="@Model.statuses" asp-for="@Model.Status" class="form-control">
+
+                                    <option value="none" selected="">Select item</option>
+
+                                </select>
+
+                            </div>
+                            <div class="form-group mb-3">
                                 <label for="emailaddress">Description</label>
                                 <textarea style="height: 150px;" class="form-control" asp-for="@Model.Description" type="text" placeholder="Description" required></textarea>
                             </div>
 
-                           
+
 
                             <div class="form-group mb-3">
                                 <label asp-for="@Model.Upload">Upload Image</label>
                                 <div class="custom-file">
                                     <input type="file" asp-for="@Model.Upload" class="form-control custom-file-input" />
                                 </div>
-                                
+
                             </div>
 
 
@@ -68,15 +83,15 @@
 
                         </form>
 
-                        <!-- end row -->
+                       
 
-                    </div> <!-- end card-body -->
+                    </div>  
                 </div>
-                <!-- end card -->
+                
 
-            </div> <!-- end col -->
+            </div>  
         </div>
-        <!-- end row -->
+        
     </div>
-    <!-- end container -->
+    
 </div>

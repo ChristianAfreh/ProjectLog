@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ProjectLog.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,9 @@ namespace ProjectLog.ViewModel
         public string ProjectManager { get; set; }
 
         public int Status { get; set; }
+        public string date { get; set; }
+
+        public SelectList statuses { get; set; }
 
         public IFormFile Upload{ get; set; }
     }

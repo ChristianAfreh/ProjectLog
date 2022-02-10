@@ -20,6 +20,7 @@ namespace ProjectLog.Controllers
              ViewBag.id = id;
             var result =_sdgService.GetProjectUnderSDG( id);
             return View(result);
+          
         }
     }
 }

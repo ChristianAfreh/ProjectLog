@@ -26,5 +26,7 @@ namespace ProjectLog.Models
         public virtual ICollection<ProjectPhoto> ProjectPhotos { get; set; }
         public virtual ICollection<Sdgproject> Sdgprojects { get; set; }
         public virtual ICollection<StaffProject> StaffProjects { get; set; }
+
+        
     }
 }
