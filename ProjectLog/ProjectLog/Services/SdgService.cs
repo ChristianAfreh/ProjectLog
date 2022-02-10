@@ -31,8 +31,8 @@ namespace ProjectLog.Services
             {
 
                 project.Add(_context.Projects.Find(item.ProjectId));
-                //var res = _context.Projects.Where(x => x.ProjectId == item.ProjectId);
-                //project.Add((Project)res);
+                //var res = _context.Projects.Where(x => x.Stat);
+                //project.Add(res);
             }
 
             SDGProjectViewModel sDGProjectViewModel = new SDGProjectViewModel()

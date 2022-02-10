@@ -48,49 +48,6 @@ namespace ProjectLog.Services
             return project;
         }
 
-        public void AddSDGToProject(int SDGID, int projectId)
-        {
-            
-            if (_context.Sdgprojects.Where(x => x.GoalId == SDGID && x.ProjectId == projectId).Any())
-            {
-
-            }
-            else
-            {
-                Sdgproject sdgproject = new Sdgproject()
-                {
-                    GoalId = SDGID,
-                    ProjectId = projectId
-                };
-
-                _context.Sdgprojects.Add(sdgproject);
-                _context.SaveChanges();
-            }
-           
-        }
-
-        public void AddStaffToProject(int StaffId, int projectId)
-        {
-
-
-            if (_context.StaffProjects.Where(x => x.StaffId == StaffId && x.ProjectId == projectId).Any())
-            {
-
-            }
-            else
-            {
-                StaffProject staffproject = new StaffProject()
-                {
-                    StaffId = StaffId,
-                    ProjectId = projectId,
-                    CreatedOn = DateTime.Now
-                };
-
-                _context.StaffProjects.Add(staffproject);
-                _context.SaveChanges();
-            }
-
-        }
 
         public List<Project> GetAllProjects()
         {
@@ -123,5 +80,19 @@ namespace ProjectLog.Services
             };
             return projectDetails;
         }
+        public Project DeleteProject(int ProjectId)
+        {
+            Project project = _context.Projects.FirstOrDefault(x => x.ProjectId == ProjectId);
+            
+            if (project != null)
+            {
+                _context.Remove(project);
+            }
+            return project;
+
+
+        }
     }
+
+
 }

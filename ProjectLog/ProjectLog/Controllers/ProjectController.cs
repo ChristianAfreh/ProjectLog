@@ -143,25 +143,7 @@ namespace ProjectLog.Controllers
             
         }
 
-
-        [HttpPost]
-        public IActionResult AddStaff(List<AddStaffToProjectViewModel> model, int id)
-        {
-            if (ModelState.IsValid)
-            {
-                for (int i = 0; i < model.Count; i++)
-                {
-                    if (model[i].IsSelected)
-                    {
-                        _projectService.AddStaffToProject(model[i].StaffId, id);
-                    }
-                    else
-                    {
-                       // do Nothing
-                                }
-                }
-                return RedirectToAction("ProjectList");
-            }
+       
 
             return View();
 
