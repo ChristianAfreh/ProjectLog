@@ -1,4 +1,5 @@
-﻿using ProjectLog.Models;
+﻿
+using ProjectLog.Models;
 using ProjectLog.ViewModel;
 using System.Collections.Generic;
 
@@ -12,7 +13,11 @@ namespace ProjectLog.Services.IService
 
         public Project AddProject(AddProjectViewModel model);
 
-        
+        public AddProjectViewModel GetAllStatus();
 
+        public string AddImagetoProject(string filename, int projectId);
+
+        public void AddSDGToProject(int SDGID, int projectId);
+        public void AddStaffToProject(int StaffId, int projectId);
     }
 }

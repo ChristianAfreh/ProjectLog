@@ -19,13 +19,14 @@ namespace ProjectLog.Models
 
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<ProjectPhoto> ProjectPhotos { get; set; }
         public virtual DbSet<Sdg> Sdgs { get; set; }
         public virtual DbSet<Sdgproject> Sdgprojects { get; set; }
         public virtual DbSet<StaffProject> StaffProjects { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<staff> staff { get; set; }
 
-   
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -79,6 +80,25 @@ namespace ProjectLog.Models
                     .HasForeignKey(d => d.StatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("RefStatus7");
+            });
+
+            modelBuilder.Entity<ProjectPhoto>(entity =>
+            {
+                entity.ToTable("ProjectPhoto");
+
+                entity.Property(e => e.ProjectPhotoId).HasColumnName("ProjectPhotoID");
+
+                entity.Property(e => e.PhotoPath)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
+
+                entity.HasOne(d => d.Project)
+                    .WithMany(p => p.ProjectPhotos)
+                    .HasForeignKey(d => d.ProjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Ref_Project");
             });
 
             modelBuilder.Entity<Sdg>(entity =>
