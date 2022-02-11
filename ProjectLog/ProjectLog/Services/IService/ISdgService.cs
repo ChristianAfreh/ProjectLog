@@ -8,6 +8,7 @@ namespace ProjectLog.Services
     public interface ISdgService
     {
         public List<Sdg> GetAllSdgs();
+        public NumberOfProjectsUnderSDG GetTotalNumberOfProjectUnderSdg();
 
         public SDGProjectViewModel GetProjectUnderSDG(int id);
     }

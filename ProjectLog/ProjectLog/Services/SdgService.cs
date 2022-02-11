@@ -15,10 +15,26 @@ namespace ProjectLog.Services
         {
             _context = context;
         }
-        public List<Sdg> GetAllSdgs()
+
+
+        public NumberOfProjectsUnderSDG GetTotalNumberOfProjectUnderSdg()
         {
+
             var result = _context.Sdgs.ToList();
-            return result;
+            List<int> number = new List<int>();
+            for (int i = 0; i < result.Count; i++)
+            {
+                number.Add(_context.Sdgprojects.Where(x => x.GoalId == i + 1).Count());
+            }
+
+            NumberOfProjectsUnderSDG numberOfProjectsUnderSDG = new NumberOfProjectsUnderSDG()
+            {
+                _Sdg=result,
+                numberUnderSdg =number
+            };
+          
+           
+            return numberOfProjectsUnderSDG;
         }
 
         public SDGProjectViewModel GetProjectUnderSDG(int id)
@@ -27,21 +43,30 @@ namespace ProjectLog.Services
             var result = _context.Sdgprojects.Where(x => x.GoalId == id).ToList();
             var sdg = _context.Sdgs.Find(id);
 
+            List<int> number = new List<int>();
+            
+
             foreach (var item in result)
             {
-
+                number.Add(_context.StaffProjects.Where(x => x.ProjectId == item.ProjectId).Count());
                 project.Add(_context.Projects.Find(item.ProjectId));
-                //var res = _context.Projects.Where(x => x.Stat);
-                //project.Add(res);
+              
             }
 
             SDGProjectViewModel sDGProjectViewModel = new SDGProjectViewModel()
             {
                 sdg = sdg,
-                project = project
+                project = project,
+                NumberOfStaff =number
             };
 
             return sDGProjectViewModel;
+        }
+
+        public List<Sdg> GetAllSdgs()
+        {
+            var result = _context.Sdgs.ToList();
+            return result;
         }
     }
 }

@@ -15,7 +15,8 @@ namespace ProjectLog.Controllers
         }
         public IActionResult Index()
         {
-           var result = _sdgService.GetAllSdgs();
+            var result = _sdgService.GetTotalNumberOfProjectUnderSdg();
+
             return View(result);
         }
 
