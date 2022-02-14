@@ -9,7 +9,7 @@ namespace ProjectLog.Services.IService
     {
         public Project GetProjectById(int Id);
 
-        public List<Project> GetAllProjects();
+        public AllProjectViewModel GetAllProjects();
 
         public Project AddProject(AddProjectViewModel model);
 
@@ -19,5 +19,6 @@ namespace ProjectLog.Services.IService
 
         public void AddSDGToProject(int SDGID, int projectId);
         public void AddStaffToProject(int StaffId, int projectId);
+        public void DeleteProject(int Id);
     }
 }
