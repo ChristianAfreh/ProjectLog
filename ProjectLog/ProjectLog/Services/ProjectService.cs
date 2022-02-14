@@ -94,10 +94,59 @@ namespace ProjectLog.Services
 
         }
 
-        public List<Project> GetAllProjects()
+        public void DeleteProject(int Id)
         {
-            var projects = _context.Projects.ToList();
-            return projects;
+            Project projectToDelete = _context.Projects.Include(x => x.Status)
+                 .Include(x => x.Sdgprojects)
+                 .Include(x => x.ProjectPhotos)
+                 .Include(x => x.StaffProjects)
+                .Where(c => c.ProjectId == Id).FirstOrDefault();
+            if (projectToDelete != null)
+            {
+                foreach (var Sdgproject in projectToDelete.Sdgprojects)
+                {
+                    _context.Remove(Sdgproject);
+                }
+
+                foreach (var projectPhoto in projectToDelete.ProjectPhotos)
+                {
+                    _context.Remove(projectPhoto);
+                }
+                foreach (var staffProject in projectToDelete.StaffProjects)
+                {
+                    _context.Remove(staffProject);
+                }
+
+
+                _context.Projects.Remove(projectToDelete);
+                 _context.SaveChanges();
+            }
+
+            
+            
+        }
+
+        public AllProjectViewModel GetAllProjects()
+        {
+            var projects = _context.Projects.Include(x => x.Status).ToList();
+
+            AllProjectViewModel allProjectViewModel = new AllProjectViewModel();
+            
+            if (projects.Count() != 0)
+            {
+
+                allProjectViewModel.AllProject = projects.Select(x => new ProjectViewModel()
+                {
+                    ProjectId = x.ProjectId,
+                    Title = x.Title,
+                    ProjectManager = x.ProjectManager,
+                    CreatedOn = x.CreatedOn,
+                    StatusName = x.Status.Name,
+                }).ToList();
+            }
+
+            return allProjectViewModel;
+
         }
 
         public AddProjectViewModel GetAllStatus()
