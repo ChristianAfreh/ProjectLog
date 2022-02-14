@@ -65,7 +65,7 @@
                             <div class="mt-5">
                                 <div class="mt-3"> <span class="text-muted" style="font-size:12px">Created On - @item.CreatedOn.ToLongDateString()</span> </div>
                                 <div class="mt-3 float-right">
-                                    <a href="#"><i class="fas fa-edit "></i></a>
+                                    <a asp-action="UpdateProject" asp-controller="Project" asp-route-projectId="@item.ProjectId"><i class="fas fa-edit "></i></a>
                                     <a href="#"><i class="fas fa-trash"></i></a>
                                 </div>
                             

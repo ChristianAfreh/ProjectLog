@@ -21,5 +21,10 @@ namespace ProjectLog.ViewModel
         public SelectList statuses { get; set; }
 
         public IFormFile Upload{ get; set; }
+
+        public string? Photopath{ get; set; }
+
+        public int ProjectId { get; set; }
+        
     }
 }

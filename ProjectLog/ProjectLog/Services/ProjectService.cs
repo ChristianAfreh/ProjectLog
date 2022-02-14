@@ -1,11 +1,13 @@
 ﻿
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ProjectLog.Models;
 using ProjectLog.Services.IService;
 using ProjectLog.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjectLog.Services
 {
@@ -24,8 +26,8 @@ namespace ProjectLog.Services
                 PhotoPath = filename,
                 ProjectId = projectId
             };
-            _context.ProjectPhotos.Add(photostring);
-            _context.SaveChanges();
+             _context.ProjectPhotos.Add(photostring);
+             _context.SaveChanges();
             return "Added";
         }
 
@@ -123,5 +125,67 @@ namespace ProjectLog.Services
             };
             return projectDetails;
         }
+
+        public AddProjectViewModel GetProjectToUpdate(int projectId)
+        {
+            //var project = _context.Projects.Include(x=>x.ProjectPhotos).SingleOrDefalut(x=> x.ProjectId == projectId);
+            /*var project = _context.Projects.Include(x=>x.ProjectPhotos).FirstOrDefault(x=> x.ProjectId == projectId);*/
+            var project = _context.Projects.Include(x => x.ProjectPhotos).FirstOrDefault(x => x.ProjectId == projectId);
+            var defaultPhotoPath = "1.png";
+
+            if (project.ProjectPhotos == null)
+            {
+                var projectDetails = new AddProjectViewModel()
+                {
+                    Title = project.Title,
+                    Description = project.Description,
+                    ProjectManager = project.ProjectManager,
+                    Status = project.StatusId,
+                    Photopath = defaultPhotoPath,
+                    statuses = new SelectList(_context.Statuses.Select(s => new { Id = s.StatusId, Text = $"{s.Name}" }), "Id", "Text"),
+                    ProjectId = projectId
+                };
+                return projectDetails;
+
+            }
+            else
+            {
+                var projectDetails = new AddProjectViewModel()
+                {
+                    Title = project.Title,
+                    Description = project.Description,
+                    ProjectManager = project.ProjectManager,
+                    Status = project.StatusId,
+                    Photopath = project.ProjectPhotos.FirstOrDefault().PhotoPath,
+                    statuses = new SelectList(_context.Statuses.Select(s => new { Id = s.StatusId, Text = $"{s.Name}" }), "Id", "Text"),
+                    ProjectId = projectId
+                };
+                return projectDetails;
+
+            }
+
+        }
+
+       
+
+        public void UpdateProject(AddProjectViewModel model)
+        {
+            Project project = _context.Projects.FirstOrDefault(e => e.ProjectId == model.ProjectId);
+
+            if( project!= null)
+            {
+                project.Title = model.Title;
+                project.Description = model.Description;
+                project.ProjectManager = model.ProjectManager;
+                project.StatusId = model.Status;
+                project.UpdatedOn = DateTime.Now;
+            };
+           
+            _context.Projects.Update(project);
+            _context.SaveChanges();
+            
+        }
+
+        
     }
 }

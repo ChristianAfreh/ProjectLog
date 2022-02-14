@@ -30,8 +30,21 @@ namespace ProjectLog.Controllers
         }
         public IActionResult ProjectDetails(int id)
         {
-            var result = _projectService.GetProjectById(id);
-            return View(result);
+            try
+            {
+                var result = _projectService.GetProjectById(id);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
+            
         }
 
         public IActionResult ProjectList()
@@ -53,22 +66,35 @@ namespace ProjectLog.Controllers
         [HttpPost]
         public IActionResult AddProject(AddProjectViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                string uniqueFileName = null;
-                if (model.Upload !=null)
+                if (ModelState.IsValid)
                 {
-                   string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "pics");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Upload.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    model.Upload.CopyTo(new FileStream(filePath, FileMode.Create));
-                }
+                    string uniqueFileName = null;
+                    if (model.Upload != null)
+                    {
+                        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "pics");
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Upload.FileName;
+                        string filePath =  Path.Combine(uploadsFolder, uniqueFileName);
+                        model.Upload.CopyTo(new FileStream(filePath, FileMode.Create));
+                    }
 
-                var project=_projectService.AddProject(model);
-                _projectService.AddImagetoProject(uniqueFileName, project.ProjectId);
-                return RedirectToAction("AddSDG", new { project.ProjectId} );
+                    var project = _projectService.AddProject(model);
+                    _projectService.AddImagetoProject(uniqueFileName, project.ProjectId);
+                    return RedirectToAction("AddSDG", new { project.ProjectId });
+                }
+                return View();
             }
-            return View();
+            catch ( Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
+          
         }
 
         //ADDING AN SDG TO A PROJECT
@@ -99,23 +125,37 @@ namespace ProjectLog.Controllers
         public IActionResult AddSDG(List<AddSDGToProjectViewModel> model , int Projectid)
         {
 
-            if (ModelState.IsValid)
+            try
             {
-                for (int i = 0; i < model.Count; i++)
+                if (ModelState.IsValid)
                 {
-                    if (model[i].IsSelected)
+                    for (int i = 0; i < model.Count; i++)
                     {
-                        _projectService.AddSDGToProject(model[i].SDGId, Projectid);
+                        if (model[i].IsSelected)
+                        {
+                            _projectService.AddSDGToProject(model[i].SDGId, Projectid);
+                        }
+                        else
+                        {
+                            //do Nothing
+                        }
                     }
-                    else
-                    {
-                        //do Nothing
-                    }
+                    return RedirectToAction("AddStaff", new { id = Projectid });
                 }
-                return RedirectToAction("AddStaff", new { id = Projectid } );
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
             }
 
-            return View();
+            
         }
 
         //ADDING A STAFF TO A PROJECT
@@ -147,26 +187,103 @@ namespace ProjectLog.Controllers
         [HttpPost]
         public IActionResult AddStaff(List<AddStaffToProjectViewModel> model,int id)
         {
-
-            if (ModelState.IsValid)
+            try
             {
-                for (int i = 0; i < model.Count; i++)
+                if (ModelState.IsValid)
                 {
-                    if (model[i].IsSelected)
+                    for (int i = 0; i < model.Count; i++)
                     {
-                        _projectService.AddStaffToProject(model[i].StaffId, id);
+                        if (model[i].IsSelected)
+                        {
+                            _projectService.AddStaffToProject(model[i].StaffId, id);
+                        }
+                        else
+                        {
+                            //do Nothing
+                        }
                     }
-                    else
-                    {
-                        //do Nothing
-                    }
+                    return RedirectToAction("ProjectList");
                 }
-                return RedirectToAction("ProjectList" );
-            }
 
-            return View();
+                return View();
+            }
+            catch ( Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
+            
 
         }
 
+        [HttpGet]
+        public IActionResult UpdateProject(int projectId)
+        {
+            var results = _projectService.GetProjectToUpdate(projectId);
+            return View(results);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateProject(AddProjectViewModel model, int projectId)
+        {
+            _projectService.UpdateProject(model);
+            
+            return RedirectToAction("UpdateSDGProject", new {projectId = projectId });
+        }
+
+
+        [HttpGet]
+
+        public IActionResult UpdateSDGProject(int projectid)
+        {
+            ViewBag.projectId = projectid;
+            List<Sdgproject> sdgProject = _sdgService.GetSelectedSDGs(projectid);
+            List<Sdg> sdg = _sdgService.GetAllSdgs();
+            var model = new List<AddSDGToProjectViewModel>();
+
+            for (int i = 0; i < sdg.Count; i++)
+            {
+                if(sdg[i].GoalId == sdgProject[0].GoalId)
+                {
+                    var addSDGToprojectViewModel = new AddSDGToProjectViewModel
+                    {
+                        SDGId = sdg[i].GoalId,
+                        SDGName = sdg[i].Name,
+                        IsSelected = true,
+                    };
+
+                    model.Add(addSDGToprojectViewModel);
+                }
+                else
+                {
+                    var addSDGToprojectViewModel = new AddSDGToProjectViewModel
+                    {
+                        SDGId = sdg[i].GoalId,
+                        SDGName = sdg[i].Name,
+                        IsSelected = false,
+                    };
+
+                    model.Add(addSDGToprojectViewModel);
+                }
+            }
+            /*
+                        foreach (var Sdg in sdgProject)
+                        {
+                            var addSDGToprojectViewModel = new AddSDGToProjectViewModel
+                            {
+                                SDGId = Sdg.GoalId,
+                                SDGName = Sdg.Name,
+                                IsSelected = false,
+                            };
+
+                            model.Add(addSDGToprojectViewModel);
+                        }*/
+
+            return View(model);
+        }
     }
 }
