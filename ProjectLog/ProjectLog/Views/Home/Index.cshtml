@@ -1,4 +1,4 @@
-﻿@model List<Sdg>
+﻿@model NumberOfProjectsUnderSDG
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -22,15 +22,17 @@
     </div>
     <div class="row">
 
-        @foreach(var item in Model)
+        @for (int i = 0; i < Model._Sdg.Count; i++)
         {
-              <div class="col-md-4">
+            <div class="col-md-4">
                 <div class="box">
-                    <a asp-controller="Detail" asp-action="Index" asp-route-id="@item.GoalId" style="color:black;">
+                    <a asp-controller="Detail" asp-action="Index" asp-route-id="@Model._Sdg[i].GoalId" style="color:black;">
                         <div class="our-services settings">
-                            <div class="icon"> <img src="@Url.Content("~/pics/" + @item.GoalId +".png")" height="100" width="100"> </div>
-                            <h4 style=" white-space: nowrap; width: 310px; overflow: hidden; text-overflow: ellipsis; ">@item.Name</h4>
-                            <p  >@item.Description</p>
+                            <div class="icon"> <img src="@Url.Content("~/pics/" + @Model._Sdg[i].GoalId +".png")" height="100" width="100"> </div>
+                            <h4 style=" overflow: hidden; text-overflow: ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; ">@Model._Sdg[i].Name</h4>
+                            <p style=" overflow: hidden; text-overflow: ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; ">@Model._Sdg[i].Description</p>
+                            <p class="text-muted h6 font-weight-light"> Total number of project : @Model.numberUnderSdg[i]</p>
+
                         </div>
                     </a>
 

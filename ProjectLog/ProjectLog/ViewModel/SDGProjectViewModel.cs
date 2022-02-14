@@ -11,5 +11,7 @@ namespace ProjectLog.ViewModel
         public Sdg sdg { get; set; }
 
         public List<Project> project { get; set; }
+
+        public List<int> NumberOfStaff { get; set; }
     }
 }
