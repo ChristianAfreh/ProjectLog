@@ -186,9 +186,9 @@ namespace ProjectLog.Services
             //var project = _context.Projects.Include(x=>x.ProjectPhotos).SingleOrDefalut(x=> x.ProjectId == projectId);
             /*var project = _context.Projects.Include(x=>x.ProjectPhotos).FirstOrDefault(x=> x.ProjectId == projectId);*/
             var project = _context.Projects.Include(x => x.ProjectPhotos).FirstOrDefault(x => x.ProjectId == projectId);
-            var defaultPhotoPath = "1.png";
+            var defaultPhotoPath = "noImage.png";
 
-            if (project.ProjectPhotos == null)
+            if (project.ProjectPhotos.Count <  1)
             {
                 var projectDetails = new AddProjectViewModel()
                 {
@@ -221,7 +221,22 @@ namespace ProjectLog.Services
 
         }
 
-       
+        public void UpdateImageInProject(string filename, int projectId)
+        {
+            ProjectPhoto projectPhoto = _context.ProjectPhotos.FirstOrDefault(e => e.ProjectId == projectId);
+            if( projectPhoto != null)
+            {
+                projectPhoto.ProjectId = projectId;
+                projectPhoto.PhotoPath = filename;
+               
+            }
+
+
+            _context.ProjectPhotos.Update(projectPhoto);
+            _context.SaveChanges();
+
+
+        }
 
         public void UpdateProject(AddProjectViewModel model)
         {

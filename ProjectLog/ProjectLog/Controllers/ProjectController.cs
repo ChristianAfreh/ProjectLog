@@ -230,14 +230,42 @@ namespace ProjectLog.Controllers
         [HttpPost]
         public IActionResult UpdateProject(AddProjectViewModel model, int projectId)
         {
-            _projectService.UpdateProject(model);
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    string uniqueFileName = null;
+                    if (model.Upload != null)
+                    {
+                        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "pics");
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Upload.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        model.Upload.CopyTo(new FileStream(filePath, FileMode.Create));
+
+                        _projectService.UpdateImageInProject(uniqueFileName, projectId);
+                    }
+                    _projectService.UpdateProject(model);               
+                    
+                    return RedirectToAction("UpdateSDGProject", new { projectId = projectId });
+
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
             
-            return RedirectToAction("UpdateSDGProject", new {projectId = projectId });
         }
 
 
         [HttpGet]
-
         public IActionResult UpdateSDGProject(int projectid)
         {
             ViewBag.projectId = projectid;
@@ -245,45 +273,159 @@ namespace ProjectLog.Controllers
             List<Sdg> sdg = _sdgService.GetAllSdgs();
             var model = new List<AddSDGToProjectViewModel>();
 
-            for (int i = 0; i < sdg.Count; i++)
+            List<int> selectedGoals = sdgProject
+                .Select
+                (
+                   x => x.GoalId
+                ).ToList();
+
+            var otherGoals = sdg.Where(x => !selectedGoals.Contains(x.GoalId)).ToList();
+
+            //var otherGoals = sdg.Where(x => otherGoalIds.Contains(x.GoalId)).ToList();
+
+
+            foreach (var item in sdgProject)
             {
-                if(sdg[i].GoalId == sdgProject[0].GoalId)
+                var addSDGToprojectViewModel = new AddSDGToProjectViewModel
                 {
-                    var addSDGToprojectViewModel = new AddSDGToProjectViewModel
-                    {
-                        SDGId = sdg[i].GoalId,
-                        SDGName = sdg[i].Name,
-                        IsSelected = true,
-                    };
+                    SDGId = item.GoalId,
+                    SDGName = item.Goal.Name,
+                    IsSelected = true,
+                };
 
-                    model.Add(addSDGToprojectViewModel);
-                }
-                else
-                {
-                    var addSDGToprojectViewModel = new AddSDGToProjectViewModel
-                    {
-                        SDGId = sdg[i].GoalId,
-                        SDGName = sdg[i].Name,
-                        IsSelected = false,
-                    };
-
-                    model.Add(addSDGToprojectViewModel);
-                }
+                model.Add(addSDGToprojectViewModel);
             }
-            /*
-                        foreach (var Sdg in sdgProject)
-                        {
-                            var addSDGToprojectViewModel = new AddSDGToProjectViewModel
-                            {
-                                SDGId = Sdg.GoalId,
-                                SDGName = Sdg.Name,
-                                IsSelected = false,
-                            };
 
-                            model.Add(addSDGToprojectViewModel);
-                        }*/
+
+            foreach (var item in otherGoals)
+            {
+                var addSDGToprojectViewModel = new AddSDGToProjectViewModel
+                {
+                    SDGId = item.GoalId,
+                    SDGName = item.Name,
+                    IsSelected = false,
+                };
+                model.Add(addSDGToprojectViewModel);
+            }
+            
+            
 
             return View(model);
         }
+        [HttpPost]
+        public IActionResult UpdateSDGProject(List<AddSDGToProjectViewModel> model,int projectid)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    for (int i = 0; i < model.Count; i++)
+                    {
+                        if (model[i].IsSelected)
+                        {
+                            _projectService.AddSDGToProject(model[i].SDGId, projectid);
+                        }
+                        else
+                        {
+                            //do Nothing
+                        }
+                    }
+                    return RedirectToAction("UpdateStaffProject", new { projectId = projectid });
+                }
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult UpdateStaffProject(int Projectid)
+        {
+            ViewBag.projectId = Projectid;
+            List<staff> _staff = _staffService.GetAllStaff();
+            List<StaffProject> sdgStaff = _staffService.GetSelectedStaff(Projectid);
+
+            var model = new List<AddStaffToProjectViewModel>();
+
+            List<int> selectedStaff = sdgStaff
+                 .Select
+                 (
+                    x => x.StaffId
+                 ).ToList();
+
+            var otherStaff = _staff.Where(x => !selectedStaff.Contains(x.StaffId)).ToList();
+
+            foreach (var item in sdgStaff)
+            {
+                var addStaffToProjectViewModel = new AddStaffToProjectViewModel
+                {
+                    StaffId = item.StaffId,
+                    Name = item.Staff.FirstName + " " + item.Staff.LastName,
+                    IsSelected = true,
+                };
+
+                model.Add(addStaffToProjectViewModel);
+            }
+
+            foreach (var item in _staff)
+            {
+                var addStaffToProjectViewModel = new AddStaffToProjectViewModel
+                {
+                    StaffId = item.StaffId,
+                    Name = item.FirstName + " " + item.LastName,
+                    IsSelected = false,
+                };
+
+                model.Add(addStaffToProjectViewModel);
+            }
+
+            return View(model);
+
+        } 
+        [HttpPost]
+        public IActionResult UpdateStaffProject(List<AddStaffToProjectViewModel> model, int Projectid)
+        {
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    for (int i = 0; i < model.Count; i++)
+                    {
+                        if (model[i].IsSelected)
+                        {
+                            _projectService.AddStaffToProject(model[i].StaffId, Projectid);
+                        }
+                        else
+                        {
+                            //do Nothing
+                        }
+                    }
+                    return RedirectToAction("ProjectList");
+                }
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
+
+        }
     }
 }
+
+
