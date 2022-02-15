@@ -126,12 +126,12 @@ namespace ProjectLog.Services
             
         }
 
-       /* public AllProjectViewModel GetAllProjects()
+        public AllProjectViewModel GetAllProjects()
         {
             var projects = _context.Projects.Include(x => x.Status).ToList();
 
             AllProjectViewModel allProjectViewModel = new AllProjectViewModel();
-            
+
             if (projects.Count() != 0)
             {
 
@@ -147,14 +147,14 @@ namespace ProjectLog.Services
 
             return allProjectViewModel;
 
-        }*/
-
-        public List<Project> GetAllProjects()
-        {
-            var projects = _context.Projects.Include(x => x.Status).ToList();
-
-            return projects;
         }
+
+        /*  public List<Project> GetAllProjects()
+          {
+              var projects = _context.Projects.Include(x => x.Status).ToList();
+
+              return projects;
+          }*/
         public AddProjectViewModel GetAllStatus()
         {
             var x = new AddProjectViewModel()

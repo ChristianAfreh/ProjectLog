@@ -49,18 +49,43 @@ namespace ProjectLog.Controllers
 
         public IActionResult ProjectList()
         {
+            try
+            {
+                var projects = _projectService.GetAllProjects();
+                return View(projects);
+            }
+            catch ( Exception ex)
+            {
 
-            var projects = _projectService.GetAllProjects();
-            return View(projects);
-           
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
+                     
         }
 
         //Adding a project
         [HttpGet]
         public IActionResult AddProject()
         {
-             var x = _projectService.GetAllStatus();
-            return View(x);
+            try
+            {
+                var x = _projectService.GetAllStatus();
+                return View(x);
+            }
+            catch (Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
+            
         }
 
         [HttpPost]
@@ -77,6 +102,7 @@ namespace ProjectLog.Controllers
                         uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Upload.FileName;
                         string filePath =  Path.Combine(uploadsFolder, uniqueFileName);
                         model.Upload.CopyTo(new FileStream(filePath, FileMode.Create));
+
                     }
 
                     var project = _projectService.AddProject(model);
@@ -101,30 +127,43 @@ namespace ProjectLog.Controllers
         [HttpGet]
         public IActionResult AddSDG(int id)
         {
-            ViewBag.projectId = id;
-             List<Sdg> sdg = _sdgService.GetAllSdgs();
-           
-            var model = new List<AddSDGToProjectViewModel>();
-
-            foreach(var Sdg in sdg)
+            try
             {
-                var addSDGToprojectViewModel = new AddSDGToProjectViewModel
+                ViewBag.projectId = id;
+                List<Sdg> sdg = _sdgService.GetAllSdgs();
+
+                var model = new List<AddSDGToProjectViewModel>();
+
+                foreach (var Sdg in sdg)
                 {
-                    SDGId=Sdg.GoalId,
-                    SDGName= Sdg.Name,
-                    IsSelected =false,
+                    var addSDGToprojectViewModel = new AddSDGToProjectViewModel
+                    {
+                        SDGId = Sdg.GoalId,
+                        SDGName = Sdg.Name,
+                        IsSelected = false,
+                    };
+
+                    model.Add(addSDGToprojectViewModel);
+                }
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
                 };
 
-                model.Add(addSDGToprojectViewModel);
+                return View("Error", errorViewModel);
             }
-
-            return View(model);
+          
         }
 
         [HttpPost]
         public IActionResult AddSDG(List<AddSDGToProjectViewModel> model , int Projectid)
         {
-
             try
             {
                 if (ModelState.IsValid)
@@ -154,33 +193,46 @@ namespace ProjectLog.Controllers
 
                 return View("Error", errorViewModel);
             }
-
-            
+   
         }
 
         //ADDING A STAFF TO A PROJECT
         [HttpGet]
         public IActionResult AddStaff(int id)
         {
-            ViewBag.projectId = id;
-            List<staff> _staff = _staffService.GetAllStaff();
-
-            var model = new List<AddStaffToProjectViewModel>();
-
-            foreach (var item in _staff)
+            try
             {
-                var addStaffToprojectViewModel = new AddStaffToProjectViewModel
+                ViewBag.projectId = id;
+                List<staff> _staff = _staffService.GetAllStaff();
+
+                var model = new List<AddStaffToProjectViewModel>();
+
+                foreach (var item in _staff)
                 {
-                    StaffId = item.StaffId,
-                    Name = item.FirstName + " " + item.LastName,
-                    IsSelected = false,
+                    var addStaffToprojectViewModel = new AddStaffToProjectViewModel
+                    {
+                        StaffId = item.StaffId,
+                        Name = item.FirstName + " " + item.LastName,
+                        IsSelected = false,
+                    };
+
+                    model.Add(addStaffToprojectViewModel);
+                }
+
+                return View(model);
+
+            }
+            catch (Exception ex)
+            {
+
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
                 };
 
-                model.Add(addStaffToprojectViewModel);
+                return View("Error", errorViewModel);
             }
-
-            return View(model);
-            
+          
         }
 
 
@@ -220,11 +272,25 @@ namespace ProjectLog.Controllers
 
         }
 
+        //UPDATING A PROJECT
         [HttpGet]
         public IActionResult UpdateProject(int projectId)
         {
-            var results = _projectService.GetProjectToUpdate(projectId);
-            return View(results);
+            try
+            {
+                var results = _projectService.GetProjectToUpdate(projectId);
+                return View(results);
+            }
+            catch (Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
+           
         }
 
         [HttpPost]
@@ -264,53 +330,66 @@ namespace ProjectLog.Controllers
             
         }
 
-
+        //UPDATING AN SDG ON A PROJECT
         [HttpGet]
         public IActionResult UpdateSDGProject(int projectid)
         {
-            ViewBag.projectId = projectid;
-            List<Sdgproject> sdgProject = _sdgService.GetSelectedSDGs(projectid);
-            List<Sdg> sdg = _sdgService.GetAllSdgs();
-            var model = new List<AddSDGToProjectViewModel>();
-
-            List<int> selectedGoals = sdgProject
-                .Select
-                (
-                   x => x.GoalId
-                ).ToList();
-
-            var otherGoals = sdg.Where(x => !selectedGoals.Contains(x.GoalId)).ToList();
-
-            //var otherGoals = sdg.Where(x => otherGoalIds.Contains(x.GoalId)).ToList();
-
-
-            foreach (var item in sdgProject)
+            try
             {
-                var addSDGToprojectViewModel = new AddSDGToProjectViewModel
+                ViewBag.projectId = projectid;
+                List<Sdgproject> sdgProject = _sdgService.GetSelectedSDGs(projectid);
+                List<Sdg> sdg = _sdgService.GetAllSdgs();
+                var model = new List<AddSDGToProjectViewModel>();
+
+                List<int> selectedGoals = sdgProject
+                    .Select
+                    (
+                       x => x.GoalId
+                    ).ToList();
+
+                var otherGoals = sdg.Where(x => !selectedGoals.Contains(x.GoalId)).ToList();
+
+                //var otherGoals = sdg.Where(x => otherGoalIds.Contains(x.GoalId)).ToList();
+
+                foreach (var item in sdgProject)
                 {
-                    SDGId = item.GoalId,
-                    SDGName = item.Goal.Name,
-                    IsSelected = true,
+                    var addSDGToprojectViewModel = new AddSDGToProjectViewModel
+                    {
+                        SDGId = item.GoalId,
+                        SDGName = item.Goal.Name,
+                        IsSelected = true,
+                    };
+
+                    model.Add(addSDGToprojectViewModel);
+                }
+
+
+                foreach (var item in otherGoals)
+                {
+                    var addSDGToprojectViewModel = new AddSDGToProjectViewModel
+                    {
+                        SDGId = item.GoalId,
+                        SDGName = item.Name,
+                        IsSelected = false,
+                    };
+                    model.Add(addSDGToprojectViewModel);
+                }
+
+
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
                 };
 
-                model.Add(addSDGToprojectViewModel);
+                return View("Error", errorViewModel);
             }
-
-
-            foreach (var item in otherGoals)
-            {
-                var addSDGToprojectViewModel = new AddSDGToProjectViewModel
-                {
-                    SDGId = item.GoalId,
-                    SDGName = item.Name,
-                    IsSelected = false,
-                };
-                model.Add(addSDGToprojectViewModel);
-            }
-            
-            
-
-            return View(model);
+           
         }
         [HttpPost]
         public IActionResult UpdateSDGProject(List<AddSDGToProjectViewModel> model,int projectid)
@@ -346,48 +425,64 @@ namespace ProjectLog.Controllers
             }
         }
 
+        //UPDATING STAFF ON AN SDG
         [HttpGet]
         public IActionResult UpdateStaffProject(int Projectid)
         {
-            ViewBag.projectId = Projectid;
-            List<staff> _staff = _staffService.GetAllStaff();
-            List<StaffProject> sdgStaff = _staffService.GetSelectedStaff(Projectid);
-
-            var model = new List<AddStaffToProjectViewModel>();
-
-            List<int> selectedStaff = sdgStaff
-                 .Select
-                 (
-                    x => x.StaffId
-                 ).ToList();
-
-            var otherStaff = _staff.Where(x => !selectedStaff.Contains(x.StaffId)).ToList();
-
-            foreach (var item in sdgStaff)
+            try
             {
-                var addStaffToProjectViewModel = new AddStaffToProjectViewModel
+                ViewBag.projectId = Projectid;
+                List<staff> _staff = _staffService.GetAllStaff();
+                List<StaffProject> sdgStaff = _staffService.GetSelectedStaff(Projectid);
+
+                var model = new List<AddStaffToProjectViewModel>();
+
+                List<int> selectedStaff = sdgStaff
+                     .Select
+                     (
+                        x => x.StaffId
+                     ).ToList();
+
+                var otherStaff = _staff.Where(x => !selectedStaff.Contains(x.StaffId)).ToList();
+
+                foreach (var item in sdgStaff)
                 {
-                    StaffId = item.StaffId,
-                    Name = item.Staff.FirstName + " " + item.Staff.LastName,
-                    IsSelected = true,
+                    var addStaffToProjectViewModel = new AddStaffToProjectViewModel
+                    {
+                        StaffId = item.StaffId,
+                        Name = item.Staff.FirstName + " " + item.Staff.LastName,
+                        IsSelected = true,
+                    };
+
+                    model.Add(addStaffToProjectViewModel);
+                }
+
+                foreach (var item in _staff)
+                {
+                    var addStaffToProjectViewModel = new AddStaffToProjectViewModel
+                    {
+                        StaffId = item.StaffId,
+                        Name = item.FirstName + " " + item.LastName,
+                        IsSelected = false,
+                    };
+
+                    model.Add(addStaffToProjectViewModel);
+                }
+
+                return View(model);
+
+            }
+            catch (Exception ex)
+            {
+
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
                 };
 
-                model.Add(addStaffToProjectViewModel);
+                return View("Error", errorViewModel);
             }
-
-            foreach (var item in _staff)
-            {
-                var addStaffToProjectViewModel = new AddStaffToProjectViewModel
-                {
-                    StaffId = item.StaffId,
-                    Name = item.FirstName + " " + item.LastName,
-                    IsSelected = false,
-                };
-
-                model.Add(addStaffToProjectViewModel);
-            }
-
-            return View(model);
+           
 
         } 
         [HttpPost]

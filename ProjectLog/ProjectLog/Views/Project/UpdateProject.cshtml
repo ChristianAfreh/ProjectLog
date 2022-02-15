@@ -54,13 +54,21 @@
 
 
                             <div class="form-group mb-3">
-                                <label asp-for="@Model.Upload">Upload Image</label>
+                                <label asp-for="@Model.Upload">Change Image</label>
                                 <div class="custom-file">
-                                    <input type="file" asp-for="@Model.Upload" class="form-control custom-file-input" />
+                                    @* <input type="file" asp-for="@Model.Upload" class="form-control custom-file-input" />
+        @if (!string.IsNullOrEmpty(Model.Photopath))
+        {
+            <img src="@Url.Content("~/pics/" + @Model.Photopath )" alt="" class="img-thumbnail" />
+        }*@
+
+                                    <input accept="image/*" type='file' id="imgInp" asp-for="@Model.Upload" />
+
                                     @if (!string.IsNullOrEmpty(Model.Photopath))
-                                    {
-                                        <img src="@Url.Content("~/pics/" + @Model.Photopath )" alt="" class="img-thumbnail" />
-                                    }
+                                        {
+                                            <img id="blah" src="@Url.Content("~/pics/" + @Model.Photopath )" alt="your image" class="img-thumbnail" />
+                                        }
+                                    
 
                                 </div>
 
@@ -72,12 +80,20 @@
                             </div>
                             @section Scripts {
                                 <script>
-                                    $(document).ready(function () {
+                                    @* $(document).ready(function () {
                                         $('.custom-file-input').on("change", function () {
                                             var fileName = $(this).val().split("\\").pop();
                                             $(this).next('.custom-file-label').html(fileName);
                                         })
-                                    });
+                                    });*@
+
+
+                                    imgInp.onchange = evt => {
+                                        const [file] = imgInp.files
+                                        if (file) {
+                                            blah.src = URL.createObjectURL(file)
+                                        }
+                                    }
                                 </script>
                             }
 

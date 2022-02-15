@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
+using ProjectLog.Models;
 using ProjectLog.Services;
+using System;
 using System.Diagnostics;
 
 namespace ProjectLog.Controllers
@@ -15,9 +16,22 @@ namespace ProjectLog.Controllers
         }
         public IActionResult Index()
         {
-            var result = _sdgService.GetTotalNumberOfProjectUnderSdg();
+            try
+            {
+                var result = _sdgService.GetTotalNumberOfProjectUnderSdg();
 
-            return View(result);
+                return View(result);
+            }
+            catch (Exception Ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = Ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
+           
         }
 
     
