@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Project>
+﻿@model AllProjectViewModel
 
 <link href="~/css/card.css" rel="stylesheet" />
 <link href="~/css/masthead.css" rel="stylesheet" />
@@ -8,7 +8,7 @@
     <h3 class="h3 text-center">List of All Projects</h3>
     <hr />
     <div class="row">
-        @foreach (var item in Model)
+        @for(var i = 0; i < @Model.AllProject.Count(); i++)
         {
             <div class="col-md-4">
                 <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@Model.AllProject[i].ProjectId" style="text-decoration:none">
@@ -31,7 +31,7 @@
                                 <div><span class="badge badge-pill badge-danger">@Model.AllProject[i].StatusName</span> </div>
 
                             }
-                            else if (@item.StatusId == 801)
+                            else if (@Model.AllProject[i].StatusName == "In Progress")
                             {
                                 <div><span class="badge badge-pill badge-warning">@Model.AllProject[i].StatusName</span> </div>
 
@@ -41,7 +41,7 @@
 
                         <div class="mt-5">
 
-                            <h3 class="heading" style=" overflow: hidden; text-overflow: ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; ">@item.Title</h3>
+                            <h3 class="heading" style=" overflow: hidden; text-overflow: ellipsis; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; ">@Model.AllProject[i].Title</h3>
                             <br />
                             @if (@Model.AllProject[i].StatusName == "Completed")
                             {
@@ -65,8 +65,8 @@
                             <div class="mt-5">
                                 <div class="mt-3"> <span class="text-muted" style="font-size:12px">Created On - @Model.AllProject[i].CreatedOn.ToLongDateString()</span> </div>
                                 <div class="mt-3 float-right">
-                                    <a asp-action="UpdateProject" asp-controller="Project" asp-route-projectId="@item.ProjectId"><i class="fas fa-edit "></i></a>
-                                    <a href="#"><i class="fas fa-trash"></i></a>
+                                    <a asp-action="UpdateProject" asp-controller="Project" asp-route-projectId="@Model.AllProject[i].ProjectId"><i class="fas fa-edit"></i></a>
+                                    <a asp-action="DeleteProject" asp-controller="Project" asp-route-id="@Model.AllProject[i].ProjectId" onclick="return ConfirmDelete(this)"><i class="fas fa-trash"></i></a>
                                 </div>
                             
                             </div>
