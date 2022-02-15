@@ -520,6 +520,12 @@ namespace ProjectLog.Controllers
             }
 
         }
+
+        public IActionResult DeleteProject(int Id)
+        {
+            _projectService.DeleteProject(Id);
+            return RedirectToAction("ProjectList");
+        }
     }
 }
 

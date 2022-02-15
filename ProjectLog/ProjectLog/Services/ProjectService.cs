@@ -94,6 +94,7 @@ namespace ProjectLog.Services
 
         }
 
+        //Delete Project
         public void DeleteProject(int Id)
         {
             Project projectToDelete = _context.Projects.Include(x => x.Status)
@@ -149,12 +150,12 @@ namespace ProjectLog.Services
 
         }
 
-        /*  public List<Project> GetAllProjects()
-          {
-              var projects = _context.Projects.Include(x => x.Status).ToList();
+        //public List<Project> GetAllProjects()
+        //{
+        //    var projects = _context.Projects.Include(x => x.Status).ToList();
 
-              return projects;
-          }*/
+        //    return projects;
+        //}
         public AddProjectViewModel GetAllStatus()
         {
             var x = new AddProjectViewModel()

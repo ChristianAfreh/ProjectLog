@@ -10,7 +10,7 @@ namespace ProjectLog.Services.IService
     {
         public Project GetProjectById(int Id);
 
-        public AllProjectViewModel GetAllProjects();
+        public AllProjectViewModel  GetAllProjects();
 
         public Project AddProject(AddProjectViewModel model);
 
@@ -26,5 +26,6 @@ namespace ProjectLog.Services.IService
         public void UpdateProject(AddProjectViewModel model);
 
         public void UpdateImageInProject(string filename, int projectId);
+        public void DeleteProject(int Id);
     }
 }

@@ -11,10 +11,6 @@
       "destination": "wwwroot/lib/font-awesome/"
     },
     {
-      "library": "jquery@3.6.0",
-      "destination": "wwwroot/lib/jquery/"
-    },
-    {
       "library": "bootstrap-sweetalert@1.0.1",
       "destination": "wwwroot/lib/bootstrap-sweetalert/"
     }
