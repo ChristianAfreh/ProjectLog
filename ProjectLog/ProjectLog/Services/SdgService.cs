@@ -40,17 +40,28 @@ namespace ProjectLog.Services
         public SDGProjectViewModel GetProjectUnderSDG(int id)
         {
             List<Project> project = new List<Project>();
-            var result = _context.Sdgprojects.Where(x => x.GoalId == id).ToList();
+            var result = _context.Sdgprojects.Include(x => x.Project).Where(z => z.GoalId == id).ToList();
             var sdg = _context.Sdgs.Find(id);
 
             List<int> number = new List<int>();
-            
 
+           /* for (int i = 0; i < result.Count(); i++)
+            {
+                if (result[i].Project.ProjectPhotos.Count < 1)
+                {
+                    number.Add(_context.StaffProjects.Where(x => x.ProjectId == result[i].ProjectId).Count());
+                }
+                else
+                {
+                    number.Add(_context.StaffProjects.Where(x => x.ProjectId == result[i].ProjectId).Count());
+                    project.Add(_context.Projects.Find(result[i].ProjectId));
+                }
+            }*/
             foreach (var item in result)
             {
                 number.Add(_context.StaffProjects.Where(x => x.ProjectId == item.ProjectId).Count());
                 project.Add(_context.Projects.Find(item.ProjectId));
-              
+
             }
 
             SDGProjectViewModel sDGProjectViewModel = new SDGProjectViewModel()

@@ -10,7 +10,7 @@ namespace ProjectLog.Services.IService
     {
         public Project GetProjectById(int Id);
 
-        public AllProjectViewModel  GetAllProjects();
+        public List<ProjectViewModel>  GetAllProjects();
 
         public Project AddProject(AddProjectViewModel model);
 

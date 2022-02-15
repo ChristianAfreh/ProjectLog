@@ -523,8 +523,21 @@ namespace ProjectLog.Controllers
 
         public IActionResult DeleteProject(int Id)
         {
-            _projectService.DeleteProject(Id);
-            return RedirectToAction("ProjectList");
+            try
+            {
+                _projectService.DeleteProject(Id);
+                return RedirectToAction("ProjectList");
+            }
+            catch (Exception ex)
+            {
+                var errorViewModel = new ErrorViewModel()
+                {
+                    RequestId = ex.Message
+                };
+
+                return View("Error", errorViewModel);
+            }
+            
         }
     }
 }

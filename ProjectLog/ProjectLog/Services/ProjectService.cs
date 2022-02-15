@@ -127,23 +127,56 @@ namespace ProjectLog.Services
             
         }
 
-        public AllProjectViewModel GetAllProjects()
+        public List<ProjectViewModel> GetAllProjects()
         {
-            var projects = _context.Projects.Include(x => x.Status).ToList();
-
-            AllProjectViewModel allProjectViewModel = new AllProjectViewModel();
+            var projects = _context.Projects.Include(x => x.Status).Include(x=>x.ProjectPhotos).ToList();
+            var defaultPhotoPath = "noImage.png";
+            List<ProjectViewModel> allProjectViewModel = new List<ProjectViewModel>(); 
 
             if (projects.Count() != 0)
             {
+                for (int i = 0; i < projects.Count(); i++)
+                {
+                    if(projects[i].ProjectPhotos.Count < 1)
+                    {
+                        var projectViewModel = new ProjectViewModel()
+                        {
+                            ProjectId = projects[i].ProjectId,
+                            ProjectManager = projects[i].ProjectManager,
+                            Title = projects[i].Title,
+                            CreatedOn = projects[i].CreatedOn,
+                            StatusName = projects[i].Status.Name,
+                            PhotoPath = defaultPhotoPath
 
-                allProjectViewModel.AllProject = projects.Select(x => new ProjectViewModel()
+                        };
+
+                        allProjectViewModel.Add(projectViewModel);
+                    }
+                    else
+                    {
+                        var projectViewModel = new ProjectViewModel()
+                        {
+                            ProjectId = projects[i].ProjectId,
+                            ProjectManager = projects[i].ProjectManager,
+                            Title = projects[i].Title,
+                            CreatedOn = projects[i].CreatedOn,
+                            StatusName = projects[i].Status.Name,
+                            PhotoPath = projects[i].ProjectPhotos.FirstOrDefault().PhotoPath
+                        };
+
+                        allProjectViewModel.Add(projectViewModel);
+                    }
+                }
+               /* allProjectViewModel.AllProject = projects.Select(x => new ProjectViewModel()
                 {
                     ProjectId = x.ProjectId,
                     Title = x.Title,
                     ProjectManager = x.ProjectManager,
                     CreatedOn = x.CreatedOn,
                     StatusName = x.Status.Name,
-                }).ToList();
+                    //PhotoPath = x.ProjectPhotos.FirstOrDefault().PhotoPath
+                }).ToList();*/
+
             }
 
             return allProjectViewModel;
