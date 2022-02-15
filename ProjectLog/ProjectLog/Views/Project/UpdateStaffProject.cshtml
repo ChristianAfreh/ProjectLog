@@ -1,0 +1,42 @@
+﻿@model List<AddStaffToProjectViewModel>
+
+@{
+    ViewData["Title"] = "Update Staff";
+}
+
+<link href="~/css/masthead.css" rel="stylesheet" />
+<header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+</header>
+
+<h1 class="text-center ">Update Staff TO PROJECT</h1>
+
+<div class="account-pages w-100 mt-5 mb-5">
+    <div class="container">
+        <form method="post">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Add or Remove Staff</h2>
+                </div>
+
+                <div class="card-body">
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <div class="form-check m1">
+                            <input type="hidden" asp-for="@Model[i].StaffId" />
+                            <input type="hidden" asp-for="@Model[i].Name" />
+                            <input class="form-check-input" asp-for="@Model[i].IsSelected" />
+                            <label class="form-check-label" asp-for="@Model[i].IsSelected">@Model[i].Name</label>
+                        </div>
+                    }
+
+                </div>
+
+                <div class="card-footer">
+                    <input type="submit" />
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</div>

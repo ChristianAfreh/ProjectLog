@@ -21,5 +21,11 @@ namespace ProjectLog.Services
             var result = _context.staff.ToList();
             return result;
         }
+
+        public List<StaffProject> GetSelectedStaff(int projectId)
+        {
+            var selectedStaff = _context.StaffProjects.Where(x => x.ProjectId == projectId).ToList();
+            return selectedStaff;
+        }
     }
 }

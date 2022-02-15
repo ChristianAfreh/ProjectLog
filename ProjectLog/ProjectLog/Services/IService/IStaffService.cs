@@ -9,5 +9,7 @@ namespace ProjectLog.Services.IService
     public interface IStaffService
     {
         public List<staff> GetAllStaff();
+
+        public List<StaffProject> GetSelectedStaff(int projectId);
     }
 }

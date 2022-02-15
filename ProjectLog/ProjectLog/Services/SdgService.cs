@@ -68,5 +68,11 @@ namespace ProjectLog.Services
             var result = _context.Sdgs.ToList();
             return result;
         }
+
+        public List<Sdgproject> GetSelectedSDGs(int projectId)
+        {
+            var selectedSdg = _context.Sdgprojects.Where(x => x.ProjectId == projectId).ToList();
+            return selectedSdg;
+        }
     }
 }

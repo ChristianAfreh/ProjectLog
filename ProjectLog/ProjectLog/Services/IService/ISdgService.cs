@@ -11,5 +11,7 @@ namespace ProjectLog.Services
         public NumberOfProjectsUnderSDG GetTotalNumberOfProjectUnderSdg();
 
         public SDGProjectViewModel GetProjectUnderSDG(int id);
+
+        public List<Sdgproject> GetSelectedSDGs(int projectId);
     }
 }
