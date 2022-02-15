@@ -30,16 +30,17 @@
                             <div class="form-group mb-3">
                                 <label for="fullname">Project Title</label>
                                 <input class="form-control" type="text" asp-for="@Model.Title" placeholder="Title" required>
+                                <span asp-validation-for="@Model.Title"  class="text-danger">  </span>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="fullname">Project Manager</label>
                                 <input class="form-control" type="text" asp-for="@Model.ProjectManager" required placeholder="Project Manager">
-
+                                <span asp-validation-for="@Model.ProjectManager"  class="text-danger">  </span>
                             </div>
                             <div class="form-group mb-3">
                                 <label>Started date</label>
                                 <input class="form-control" type="date" asp-for="@Model.date" required placeholder="Start Date">
-
+                                
                             </div>
 
                             <div class="form-group mb-3">
@@ -52,8 +53,9 @@
 
                             </div>
                             <div class="form-group mb-3">
-                                <label for="emailaddress">Description</label>
+                                <label>Description</label>
                                 <textarea style="height: 150px;" class="form-control" asp-for="@Model.Description" type="text" placeholder="Description" required></textarea>
+                                <span asp-validation-for="@Model.Description" class="text-danger">  </span>
                             </div>
 
 

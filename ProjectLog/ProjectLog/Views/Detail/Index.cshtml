@@ -30,147 +30,91 @@
         <h3 class="h3 text-center">List of Projects under @Model.sdg.Name</h3>
         <hr />
 
+        @if (Model.project.Count != 0)
+        {
 
+            <div class="row" style="gap:10px;">
 
-        <div class="row" style="gap:10px;">
-
-            @for (int i = 0; i < Model.project.Count; i++)
-            {
-                <div class="col-md-4">
-                    <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@Model.project[i].ProjectId" style="text-decoration:none">
-                        <div class="card p-3 mb-2">
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex flex-row align-items-center">
-                                    <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
-                                    <div class="ms-2 c-details">
-                                        <h6 class="mb-0">@Model.project[i].ProjectManager</h6> <span>Project Manager</span>
+                @for (int i = 0; i < Model.project.Count; i++)
+                {
+                    <div class="col-md-4">
+                        <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@Model.project[i].ProjectId" style="text-decoration:none">
+                            <div class="card p-3 mb-2">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex flex-row align-items-center">
+                                        <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
+                                        <div class="ms-2 c-details">
+                                            <h6 class="mb-0">@Model.project[i].ProjectManager</h6> <span>Project Manager</span>
+                                        </div>
                                     </div>
-                                </div>
-                                @if (@Model.project[i].StatusId == 1)
-                                {
-                                    <div><span class="badge badge-pill badge-success">Completed</span> </div>
+                                    @if (@Model.project[i].StatusId == 1)
+                                    {
+                                        <div><span class="badge badge-pill badge-success">Completed</span> </div>
 
-                                }
+                                    }
 
-                                else if (@Model.project[i].StatusId == 1601)
-                                {
-                                    <div><span class="badge badge-pill badge-danger">Uncompleted</span> </div>
+                                    else if (@Model.project[i].StatusId == 1601)
+                                    {
+                                        <div><span class="badge badge-pill badge-danger">Uncompleted</span> </div>
 
-                                }
-                                else if (@Model.project[i].StatusId == 801)
-                                {
-                                    <div><span class="badge badge-pill badge-warning">In Progress</span> </div>
+                                    }
+                                    else if (@Model.project[i].StatusId == 801)
+                                    {
+                                        <div><span class="badge badge-pill badge-warning">In Progress</span> </div>
 
-                                }
+                                    }
 
-                            </div>
-
-                            <div class="mt-5">
-
-                                <h3 class="heading" style="width:300px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap">@Model.project[i].Title</h3>
-                                <br />
-                                @if (@Model.project[i].StatusId == 1)
-                                {
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                }
-                                else if (@Model.project[i].StatusId == 801)
-                                {
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                }
-                                else if (@Model.project[i].StatusId == 1601)
-                                {
-                                    <div class="progress">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                }
-
-                            <div class="d-flex justify-content-between">
-                                <div class="mt-5">
-                                    <div class="mt-3"> <span class="text-muted" style="font-size:12px">Created On - @Model.project[i].CreatedOn.ToLongDateString()</span> </div>
                                 </div>
 
                                 <div class="mt-5">
-                                    <div class="mt-3"> <span class="text-muted" style="font-size:12px">Team Members: @Model.NumberOfStaff[i]</span> </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
 
-            }
-          @*  @foreach (var item in Model.project)
-            {
-                <div class="col-md-4">
-                    <a asp-action="ProjectDetails" asp-controller="Project" asp-route-id="@item.ProjectId" style="text-decoration:none">
-                        <div class="card p-3 mb-2">
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex flex-row align-items-center">
-                                    <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
-                                    <div class="ms-2 c-details">
-                                        <h6 class="mb-0">@item.ProjectManager</h6> <span>Project Manager</span>
+                                    <h3 class="heading" style="width:300px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap">@Model.project[i].Title</h3>
+                                    <br />
+                                    @if (@Model.project[i].StatusId == 1)
+                                    {
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    }
+                                    else if (@Model.project[i].StatusId == 801)
+                                    {
+                                        <div class="progress">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    }
+                                    else if (@Model.project[i].StatusId == 1601)
+                                    {
+                                        <div class="progress">
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    }
+
+                                    <div class="d-flex justify-content-between">
+                                        <div class="mt-5">
+                                            <div class="mt-3"> <span class="text-muted" style="font-size:12px">Created On - @Model.project[i].CreatedOn.ToLongDateString()</span> </div>
+                                        </div>
+
+                                        <div class="mt-5">
+                                            <div class="mt-3"> <span class="text-muted" style="font-size:12px">Team Members: @Model.NumberOfStaff[i]</span> </div>
+                                        </div>
                                     </div>
                                 </div>
-                                @if (@item.StatusId == 1)
-                                {
-                                    <div><span class="badge badge-pill badge-success">Completed</span> </div>
-
-                                }
-
-                                else if (@item.StatusId == 1601)
-                                {
-                                    <div><span class="badge badge-pill badge-danger">Uncompleted</span> </div>
-
-                                }
-                                else if (@item.StatusId == 801)
-                                {
-                                    <div><span class="badge badge-pill badge-warning">In Progress</span> </div>
-
-                                }
-
                             </div>
+                        </a>
+                    </div>
 
-                            <div class="mt-5">
+                }
 
-                                <h3 class="heading" style="width:300px;overflow:hidden;text-overflow:ellipsis;white-space: nowrap">@item.Title</h3>
-                                <br />
-                                @if (@item.StatusId == 1)
-                                {
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                }
-                                else if (@item.StatusId == 801)
-                                {
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                }
-                                else if (@item.StatusId == 1601)
-                                {
-                                    <div class="progress">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                }
+            </div>
 
-                                <div class="mt-5">
-                                    <div class="mt-3"> <span class="text-muted" style="font-size:12px">Created On - @item.CreatedOn.ToLongDateString()</span> </div>
-                                </div>
+        }
+        else
+        {
+            <div >
+                <h5 class="text-center">No Projects Added</h5>
+            </div>
+        }
 
-                                <div class="mt-5">
-                                    <div class="mt-3"> <span class="text-muted" style="font-size:12px">Team Number: 9</span> </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-            }*@
-        </div>
 
 
 

@@ -10,10 +10,12 @@ namespace ProjectLog.ViewModel
         public string ProjectManager { get; set; }
         public string StatusName { get; set; }
         public DateTime CreatedOn { get; set; }
+        public string PhotoPath { get; set; }
+
     }
 
     public class AllProjectViewModel
     {
-        public List<ProjectViewModel> AllProject { get; set; }
+        public ProjectViewModel AllProject { get; set; }
     }
 }

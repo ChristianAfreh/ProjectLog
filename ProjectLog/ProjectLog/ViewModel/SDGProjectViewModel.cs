@@ -13,5 +13,6 @@ namespace ProjectLog.ViewModel
         public List<Project> project { get; set; }
 
         public List<int> NumberOfStaff { get; set; }
+        public string Photopath { get; set; }
     }
 }
