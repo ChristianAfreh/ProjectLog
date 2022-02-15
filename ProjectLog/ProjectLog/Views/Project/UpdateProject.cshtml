@@ -59,7 +59,7 @@
                                     <input type="file" asp-for="@Model.Upload" class="form-control custom-file-input" />
                                     @if (!string.IsNullOrEmpty(Model.Photopath))
                                     {
-                                        <img src="@Url.Content("~/pics/" + @Model.Photopath )" alt="" class="img-thumbnail" />
+                                        <img style="height:20px; width:20px" src="@Url.Content("~/pics/" + @Model.Photopath )" alt="" class="img-thumbnail" />
                                     }
 
                                 </div>
