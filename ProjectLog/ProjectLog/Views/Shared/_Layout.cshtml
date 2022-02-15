@@ -27,7 +27,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-action="ProjectList" asp-controller="Project">Project List</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-action="ProjectList" asp-controller="Project">All Projects</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-action="AddProject" asp-controller="Project">Add project</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4">Login</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4">Register</a></li>
@@ -55,32 +55,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap-sweetalert/sweetalert.js"></script>
 
-    <script>
-        var object = {status: false, ele: null}
-        function ConfirmDelete(ev){
 
-            if(object.status) {return true;};
-            swal({
-        title: "Are you sure?",
-        text: "You will not be able to recover this record",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonClass: "btn-danger",
-        confirmButtonText: "Yes, delete it!",
-        closeOnConfirm: false
-    },
-    function(){
-        object.status = true;
-        object.ele = ev;
-
-        object.ele.click();
-        swal("Deleted!", "This project has been deleted.", "success");
-    });
-    return false;
-
-        };
-
-    </script>
 
     @if (IsSectionDefined("Scripts"))
     {
