@@ -457,7 +457,7 @@ namespace ProjectLog.Controllers
                     model.Add(addStaffToProjectViewModel);
                 }
 
-                foreach (var item in _staff)
+                foreach (var item in otherStaff)
                 {
                     var addStaffToProjectViewModel = new AddStaffToProjectViewModel
                     {
