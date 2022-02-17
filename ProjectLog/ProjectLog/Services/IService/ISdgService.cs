@@ -13,5 +13,7 @@ namespace ProjectLog.Services
         public SDGProjectViewModel GetProjectUnderSDG(int id);
 
         public List<Sdgproject> GetSelectedSDGs(int projectId);
+
+        public void RemoveProjectUnderSdg(int projectId);
     }
 }

@@ -27,5 +27,16 @@ namespace ProjectLog.Services
             var selectedStaff = _context.StaffProjects.Where(x => x.ProjectId == projectId).ToList();
             return selectedStaff;
         }
+
+        public void RemoveStaffUnderProject(int projectId)
+        {
+            StaffProject staffproject = _context.StaffProjects.Where(x => x.ProjectId == projectId).FirstOrDefault();
+
+            if (staffproject != null)
+            {
+                _context.StaffProjects.Remove(staffproject);
+                _context.SaveChanges();
+            }
+        }
     }
 }

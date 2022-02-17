@@ -21,17 +21,17 @@ namespace ProjectLog.Services
 
         public string AddImagetoProject(string filename, int projectId)
         {
-            var photostring = new ProjectPhoto
-            {
-                PhotoPath = filename,
-                ProjectId = projectId
-            };
-             _context.ProjectPhotos.Add(photostring);
-             _context.SaveChanges();
+            //var photostring = new ProjectPhoto
+            //{
+            //    PhotoPath = filename,
+            //    ProjectId = projectId
+            //};
+            // _context.ProjectPhotos.Add(photostring);
+            // _context.SaveChanges();
             return "Added";
         }
 
-        public Project AddProject(AddProjectViewModel model)
+        public Project AddProject(AddProjectViewModel model, string imageName)
         {
             Project project = new Project()
             {
@@ -39,8 +39,11 @@ namespace ProjectLog.Services
                 Description = model.Description,
                 ProjectManager = model.ProjectManager,
                 CreatedOn = DateTime.Now,
-                StatusId = model.Status
-
+                StatusId = model.Status,
+                CreatedBy = "Admin",
+                IsDeleted = false,
+                ProjectStartDate = model.date,
+                PhotoName = imageName,
 
 
             };
@@ -62,7 +65,9 @@ namespace ProjectLog.Services
                 Sdgproject sdgproject = new Sdgproject()
                 {
                     GoalId = SDGID,
-                    ProjectId = projectId
+                    ProjectId = projectId,
+                    CreatedOn =DateTime.Now,
+                    CreatedBy = "Admin"
                 };
 
                 _context.Sdgprojects.Add(sdgproject);
@@ -85,7 +90,8 @@ namespace ProjectLog.Services
                 {
                     StaffId = StaffId,
                     ProjectId = projectId,
-                    CreatedOn = DateTime.Now
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = "Admin"
                 };
 
                 _context.StaffProjects.Add(staffproject);
@@ -97,31 +103,56 @@ namespace ProjectLog.Services
         //Delete Project
         public void DeleteProject(int Id)
         {
-            Project projectToDelete = _context.Projects.Include(x => x.Status)
-                 .Include(x => x.Sdgprojects)
-                 .Include(x => x.ProjectPhotos)
-                 .Include(x => x.StaffProjects)
-                .Where(c => c.ProjectId == Id).FirstOrDefault();
-            if (projectToDelete != null)
+            Project project = _context.Projects.Include(x=>x.Sdgprojects)
+                .Include(x=>x.StaffProjects).Where(x => x.ProjectId == Id).FirstOrDefault();
+
+            if(project != null)
             {
-                foreach (var Sdgproject in projectToDelete.Sdgprojects)
-                {
-                    _context.Remove(Sdgproject);
+                project.IsDeleted = true;
+                project.UpdatedBy = "UserAdmin";
+                project.UpdatedOn = DateTime.Now;
+
+                foreach (var Sdgproject in project.Sdgprojects)
+               {
+                   _context.Remove(Sdgproject);
                 }
 
-                foreach (var projectPhoto in projectToDelete.ProjectPhotos)
-                {
-                    _context.Remove(projectPhoto);
-                }
-                foreach (var staffProject in projectToDelete.StaffProjects)
+                foreach (var staffProject in project.StaffProjects)
                 {
                     _context.Remove(staffProject);
                 }
-
-
-                _context.Projects.Remove(projectToDelete);
-                 _context.SaveChanges();
             }
+            else
+            {
+                //do nothing
+            }
+            _context.Projects.Update(project);
+            _context.SaveChanges();
+            //Project projectToDelete = _context.Projects.Include(x => x.Status)
+            //     .Include(x => x.Sdgprojects)
+            //     .Include(x => x.ProjectPhotos)
+            //     .Include(x => x.StaffProjects)
+            //    .Where(c => c.ProjectId == Id).FirstOrDefault();
+            //if (projectToDelete != null)
+            //{
+            //    foreach (var Sdgproject in projectToDelete.Sdgprojects)
+            //    {
+            //        _context.Remove(Sdgproject);
+            //    }
+
+            //    foreach (var projectPhoto in projectToDelete.ProjectPhotos)
+            //    {
+            //        _context.Remove(projectPhoto);
+            //    }
+            //    foreach (var staffProject in projectToDelete.StaffProjects)
+            //    {
+            //        _context.Remove(staffProject);
+            //    }
+
+
+            //    _context.Projects.Remove(projectToDelete);
+            //     _context.SaveChanges();
+            //}
 
             
             
@@ -129,15 +160,16 @@ namespace ProjectLog.Services
 
         public List<ProjectViewModel> GetAllProjects()
         {
-            var projects = _context.Projects.Include(x => x.Status).Include(x=>x.ProjectPhotos).ToList();
+            var projects = _context.Projects.Include(x => x.Status).Where(x=>x.IsDeleted == false).ToList();
+           
             var defaultPhotoPath = "noImage.png";
-            List<ProjectViewModel> allProjectViewModel = new List<ProjectViewModel>(); 
+            List<ProjectViewModel> allProjectViewModel = new List<ProjectViewModel>();
 
             if (projects.Count() != 0)
             {
                 for (int i = 0; i < projects.Count(); i++)
                 {
-                    if(projects[i].ProjectPhotos.Count < 1)
+                    if (projects[i].PhotoName == null )
                     {
                         var projectViewModel = new ProjectViewModel()
                         {
@@ -161,34 +193,28 @@ namespace ProjectLog.Services
                             Title = projects[i].Title,
                             CreatedOn = projects[i].CreatedOn,
                             StatusName = projects[i].Status.Name,
-                            PhotoPath = projects[i].ProjectPhotos.FirstOrDefault().PhotoPath
+                            PhotoPath = projects[i].PhotoName
                         };
 
                         allProjectViewModel.Add(projectViewModel);
                     }
                 }
-               /* allProjectViewModel.AllProject = projects.Select(x => new ProjectViewModel()
-                {
-                    ProjectId = x.ProjectId,
-                    Title = x.Title,
-                    ProjectManager = x.ProjectManager,
-                    CreatedOn = x.CreatedOn,
-                    StatusName = x.Status.Name,
-                    //PhotoPath = x.ProjectPhotos.FirstOrDefault().PhotoPath
-                }).ToList();*/
+                /* allProjectViewModel.AllProject = projects.Select(x => new ProjectViewModel()
+                 {
+                     ProjectId = x.ProjectId,
+                     Title = x.Title,
+                     ProjectManager = x.ProjectManager,
+                     CreatedOn = x.CreatedOn,
+                     StatusName = x.Status.Name,
+                     //PhotoPath = x.ProjectPhotos.FirstOrDefault().PhotoPath
+                 }).ToList();*/
 
-            }
+                }
 
-            return allProjectViewModel;
+                return allProjectViewModel;
 
         }
 
-        //public List<Project> GetAllProjects()
-        //{
-        //    var projects = _context.Projects.Include(x => x.Status).ToList();
-
-        //    return projects;
-        //}
         public AddProjectViewModel GetAllStatus()
         {
             var x = new AddProjectViewModel()
@@ -219,60 +245,53 @@ namespace ProjectLog.Services
         {
             //var project = _context.Projects.Include(x=>x.ProjectPhotos).SingleOrDefalut(x=> x.ProjectId == projectId);
             /*var project = _context.Projects.Include(x=>x.ProjectPhotos).FirstOrDefault(x=> x.ProjectId == projectId);*/
-            var project = _context.Projects.Include(x => x.ProjectPhotos).FirstOrDefault(x => x.ProjectId == projectId);
-            var defaultPhotoPath = "noImage.png";
+            var project = _context.Projects.Where(x => x.ProjectId == projectId).FirstOrDefault();
 
-            if (project.ProjectPhotos.Count <  1)
+            //var defaultPhotoPath = "noImage.png";
+
+            AddProjectViewModel projectDetails = new AddProjectViewModel();
+
+            if (project != null)
             {
-                var projectDetails = new AddProjectViewModel()
+
+
+                projectDetails = new AddProjectViewModel()
                 {
                     Title = project.Title,
                     Description = project.Description,
                     ProjectManager = project.ProjectManager,
                     Status = project.StatusId,
-                    Photopath = defaultPhotoPath,
+                    Photopath = project.PhotoName,
                     statuses = new SelectList(_context.Statuses.Select(s => new { Id = s.StatusId, Text = $"{s.Name}" }), "Id", "Text"),
                     ProjectId = projectId
                 };
                 return projectDetails;
 
             }
-            else
-            {
-                var projectDetails = new AddProjectViewModel()
-                {
-                    Title = project.Title,
-                    Description = project.Description,
-                    ProjectManager = project.ProjectManager,
-                    Status = project.StatusId,
-                    Photopath = project.ProjectPhotos.FirstOrDefault().PhotoPath,
-                    statuses = new SelectList(_context.Statuses.Select(s => new { Id = s.StatusId, Text = $"{s.Name}" }), "Id", "Text"),
-                    ProjectId = projectId
-                };
-                return projectDetails;
+           
 
-            }
+            return projectDetails;
 
         }
 
         public void UpdateImageInProject(string filename, int projectId)
         {
-            ProjectPhoto projectPhoto = _context.ProjectPhotos.FirstOrDefault(e => e.ProjectId == projectId);
-            if( projectPhoto != null)
-            {
-                projectPhoto.ProjectId = projectId;
-                projectPhoto.PhotoPath = filename;
+            //ProjectPhoto projectPhoto = _context.ProjectPhotos.FirstOrDefault(e => e.ProjectId == projectId);
+            //if( projectPhoto != null)
+            //{
+            //    projectPhoto.ProjectId = projectId;
+            //    projectPhoto.PhotoPath = filename;
                
-            }
+            //}
 
 
-            _context.ProjectPhotos.Update(projectPhoto);
-            _context.SaveChanges();
+            //_context.ProjectPhotos.Update(projectPhoto);
+            //_context.SaveChanges();
 
 
         }
 
-        public void UpdateProject(AddProjectViewModel model)
+        public void UpdateProject(AddProjectViewModel model, string ImageName)
         {
             Project project = _context.Projects.FirstOrDefault(e => e.ProjectId == model.ProjectId);
 
@@ -283,6 +302,17 @@ namespace ProjectLog.Services
                 project.ProjectManager = model.ProjectManager;
                 project.StatusId = model.Status;
                 project.UpdatedOn = DateTime.Now;
+                project.UpdatedBy = "Admin";
+                project.IsDeleted = false;
+                if (model.Photopath != null && model.Upload.FileName == null)
+                {
+                    project.PhotoName = model.Photopath ;
+                }
+                else
+                {
+                    project.PhotoName = ImageName;
+                }
+               
             };
            
             _context.Projects.Update(project);

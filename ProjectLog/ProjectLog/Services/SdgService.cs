@@ -85,5 +85,16 @@ namespace ProjectLog.Services
             var selectedSdg = _context.Sdgprojects.Where(x => x.ProjectId == projectId).ToList();
             return selectedSdg;
         }
+
+        public void RemoveProjectUnderSdg(int projectId)
+        {
+            Sdgproject sdgproject = _context.Sdgprojects.Where(x => x.ProjectId == projectId).FirstOrDefault();
+
+            if(sdgproject != null)
+            {
+                _context.Sdgprojects.Remove(sdgproject);
+                _context.SaveChanges();
+            }
+        }
     }
 }

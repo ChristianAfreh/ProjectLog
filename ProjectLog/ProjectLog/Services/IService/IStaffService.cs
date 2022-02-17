@@ -11,5 +11,7 @@ namespace ProjectLog.Services.IService
         public List<staff> GetAllStaff();
 
         public List<StaffProject> GetSelectedStaff(int projectId);
+
+        public void RemoveStaffUnderProject(int projectId);
     }
 }

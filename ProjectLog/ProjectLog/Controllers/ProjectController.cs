@@ -105,8 +105,8 @@ namespace ProjectLog.Controllers
 
                     }
 
-                    var project = _projectService.AddProject(model);
-                    _projectService.AddImagetoProject(uniqueFileName, project.ProjectId);
+                    var project = _projectService.AddProject(model, uniqueFileName);
+                    //_projectService.AddImagetoProject(uniqueFileName, project.ProjectId);
                     return RedirectToAction("AddSDG", new { project.ProjectId });
                 }
                 return View();
@@ -309,9 +309,9 @@ namespace ProjectLog.Controllers
                         string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                         model.Upload.CopyTo(new FileStream(filePath, FileMode.Create));
 
-                        _projectService.UpdateImageInProject(uniqueFileName, projectId);
+                        //_projectService.UpdateImageInProject(uniqueFileName, projectId);
                     }
-                    _projectService.UpdateProject(model);               
+                    _projectService.UpdateProject(model, uniqueFileName);               
                     
                     return RedirectToAction("UpdateSDGProject", new { projectId = projectId });
 
@@ -396,19 +396,32 @@ namespace ProjectLog.Controllers
         {
             try
             {
+                var selectedSDGUnderProject = _sdgService.GetSelectedSDGs(projectid);
+               List<int> selectedsdg  = selectedSDGUnderProject.Select(x => x.GoalId).ToList();
+                var othersdgs = selectedSDGUnderProject.Where(x => !selectedsdg.Contains(x.GoalId)).ToList();
                 if (ModelState.IsValid)
                 {
-                    for (int i = 0; i < model.Count; i++)
+                    if (model.Count > 1)
                     {
-                        if (model[i].IsSelected)
+                        for (int i = 0; i < model.Count; i++)
                         {
-                            _projectService.AddSDGToProject(model[i].SDGId, projectid);
+                            if (model[i].IsSelected)
+                            {
+                                _projectService.AddSDGToProject(model[i].SDGId, projectid);
+                            }
+                            else if (!model[i].IsSelected && selectedSDGUnderProject[i].GoalId == model[i].SDGId && selectedSDGUnderProject[i].ProjectId == projectid)
+                            {
+                                _sdgService.RemoveProjectUnderSdg(projectid);
+                            }
+                            else
+                            {
+                                //do Nothing
+                            }
                         }
-                        else
-                        {
-                            //do Nothing
-                        }
+                        return RedirectToAction("UpdateStaffProject", new { projectId = projectid });
+
                     }
+
                     return RedirectToAction("UpdateStaffProject", new { projectId = projectid });
                 }
 
@@ -457,7 +470,7 @@ namespace ProjectLog.Controllers
                     model.Add(addStaffToProjectViewModel);
                 }
 
-                foreach (var item in _staff)
+                foreach (var item in otherStaff)
                 {
                     var addStaffToProjectViewModel = new AddStaffToProjectViewModel
                     {
@@ -491,18 +504,26 @@ namespace ProjectLog.Controllers
 
             try
             {
+                var selectedStaffUnderProject = _staffService.GetSelectedStaff(Projectid);
                 if (ModelState.IsValid)
-                {
-                    for (int i = 0; i < model.Count; i++)
+                {   if(model.Count > 1)
                     {
-                        if (model[i].IsSelected)
+                        for (int i = 0; i < model.Count; i++)
                         {
-                            _projectService.AddStaffToProject(model[i].StaffId, Projectid);
+                            if (model[i].IsSelected)
+                            {
+                                _projectService.AddStaffToProject(model[i].StaffId, Projectid);
+                            }
+                            else if (!model[i].IsSelected && selectedStaffUnderProject[i].StaffId == model[i].StaffId && selectedStaffUnderProject[i].ProjectId == Projectid)
+                            {
+                                _sdgService.RemoveProjectUnderSdg(Projectid);
+                            }
+                            else
+                            {
+                                //do Nothing
+                            }
                         }
-                        else
-                        {
-                            //do Nothing
-                        }
+                        return RedirectToAction("ProjectList");
                     }
                     return RedirectToAction("ProjectList");
                 }

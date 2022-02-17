@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProjectLog.Data;
+//using ProjectLog.Data;
 using ProjectLog.Models;
 using ProjectLog.Services;
 using ProjectLog.Services.IService;

@@ -12,7 +12,7 @@ namespace ProjectLog.Services.IService
 
         public List<ProjectViewModel>  GetAllProjects();
 
-        public Project AddProject(AddProjectViewModel model);
+        public Project AddProject(AddProjectViewModel model, string imageName);
 
         public AddProjectViewModel GetAllStatus();
 
@@ -23,7 +23,7 @@ namespace ProjectLog.Services.IService
 
         public AddProjectViewModel GetProjectToUpdate(int projectId);
 
-        public void UpdateProject(AddProjectViewModel model);
+        public void UpdateProject(AddProjectViewModel model, string ImageName);
 
         public void UpdateImageInProject(string filename, int projectId);
         public void DeleteProject(int Id);

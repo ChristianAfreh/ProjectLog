@@ -56,11 +56,15 @@
                             <div class="form-group mb-3">
                                 <label asp-for="@Model.Upload">Change Image</label>
                                 <div class="custom-file">
-                                    <input type="file" asp-for="@Model.Upload" class="form-control custom-file-input" />
-                                    @if (!string.IsNullOrEmpty(Model.Photopath))
-                                    {
-                                        <img style="height:20px; width:20px" src="@Url.Content("~/pics/" + @Model.Photopath )" alt="" class="img-thumbnail" />
-                                    }
+                                    @*<input type="file" asp-for="@Model.Upload" class="form-control custom-file-input" />*@
+                                 @*   @if (!string.IsNullOrEmpty(Model.Photopath))
+                                    {*@
+
+                                        <input accept="image/*" type='file' id="imgInp" asp-for="@Model.Upload" />
+                                        <img id="blah" style="height:50px;  width:50px" src="@Url.Content("~/pics/" + @Model.Photopath )"  class="img-thumbnail" />
+               
+                                        
+                                    @*}*@
 
                                 </div>
 

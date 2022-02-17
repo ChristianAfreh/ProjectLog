@@ -18,6 +18,10 @@ namespace ProjectLog.Models
         public string OtherNames { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? UpdatedOn { get; set; }
+        public string UpdatedBy { get; set; }
         public int DepartmentId { get; set; }
 
         public virtual Department Department { get; set; }
